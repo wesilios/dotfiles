@@ -1,3 +1,5 @@
+name: Validate Neovim Configurations
+
 on:
   push:
     branches: ["master"]
@@ -5,83 +7,80 @@ on:
     branches: ["master"]
 
 jobs:
-  validate-config:
+  validate:
+    name: Validate ${{ matrix.config }} configuration
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        config: [lazy, plug]
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      - name: Setup Neovim
+      - name: Setup Neovim (stable)
         uses: rhysd/action-setup-vim@v1
         with:
           neovim: true
           version: stable
 
+      - name: Prepare ~/.config/nvim
+        run: |
+          mkdir -p ~/.config/nvim
+
+      # ===============================
+      # PLUG VERSION VALIDATION
+      # ===============================
+      - name: Copy plug configuration
+        if: matrix.config == 'plug'
+        run: |
+          cp -r nvim.plug/* ~/.config/nvim/
+
       - name: Install vim-plug
+        if: matrix.config == 'plug'
         run: |
           curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-      - name: Copy configuration files
-        run: |
-          mkdir -p ~/.config/nvim
-          cp -r . ~/.config/nvim/
-
-      # 🔥 Install all plugins *before* loading init.vim
-      - name: Install plugins
+      - name: Install plug plugins
+        if: matrix.config == 'plug'
         run: |
           nvim --headless -c "PlugInstall --sync" -c "qa"
 
-      # 🔥 Now validation will pass because gruvbox exists
-      - name: Validate configuration syntax
+      - name: Validate plug config
+        if: matrix.config == 'plug'
         run: |
           nvim --headless -c "try | source ~/.config/nvim/init.vim | catch | cquit 1 | endtry | quit"
 
+      # ===============================
+      # LAZY VERSION VALIDATION
+      # ===============================
+      - name: Copy lazy configuration
+        if: matrix.config == 'lazy'
+        run: |
+          cp -r nvim.lazy/* ~/.config/nvim/
+
+      - name: Install lazy.nvim
+        if: matrix.config == 'lazy'
+        run: |
+          git clone --filter=blob:none \
+            https://github.com/folke/lazy.nvim.git \
+            ~/.local/share/nvim/lazy/lazy.nvim
+
+      - name: Install lazy plugins
+        if: matrix.config == 'lazy'
+        run: |
+          nvim --headless "+Lazy! sync" +qa
+
+      - name: Validate lazy config
+        if: matrix.config == 'lazy'
+        run: |
+          nvim --headless -c "lua print('Loaded init.lua')" -c "quit"
+
+      # ===============================
+      # Universal final check
+      # ===============================
       - name: Basic functionality test
         run: |
-          echo "Testing Neovim functionality..."
           nvim --headless -c "echo 'Configuration loaded successfully'" -c "quit"
-on:
-  push:
-    branches: ["master"]
-  pull_request:
-    branches: ["master"]
-
-jobs:
-  validate-config:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Setup Neovim
-        uses: rhysd/action-setup-vim@v1
-        with:
-          neovim: true
-          version: stable
-
-      - name: Install vim-plug
-        run: |
-          curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-      - name: Copy configuration files
-        run: |
-          mkdir -p ~/.config/nvim
-          cp -r . ~/.config/nvim/
-
-      # 🔥 Install all plugins *before* loading init.vim
-      - name: Install plugins
-        run: |
-          nvim --headless -c "PlugInstall --sync" -c "qa"
-
-      # 🔥 Now validation will pass because gruvbox exists
-      - name: Validate configuration syntax
-        run: |
-          nvim --headless -c "try | source ~/.config/nvim/init.vim | catch | cquit 1 | endtry | quit"
-
-      - name: Basic functionality test
-        run: |
-          echo "Testing Neovim functionality..."
-          nvim --headless -c "echo 'Configuration loaded successfully'" -c "quit"
-
