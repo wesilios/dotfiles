@@ -22,7 +22,7 @@ for f in split(glob(config_files), '\n')
 endfor
 
 " Optional: load custom colorscheme
-colorscheme molokai256
+colorscheme gruvbox
 
 " Optional: Load Lua entry point if exists (future-proof)
 let lua_init = g:config_path . '/lua/init_lua.lua'
