@@ -2,24 +2,22 @@
 # A Docker environment for testing the nvim.lazy configuration
 FROM archlinux:latest
 
-# Update system and install required packages
-RUN pacman -Syu --noconfirm && \
+# Install required packages
+# Note: To install extras (base-devel, yay, fastfetch):
+#       docker exec -it <container> bash
+RUN pacman -Syu --noconfirm --needed archlinux-keyring && \
     pacman -S --noconfirm \
-        base-devel \
         sudo \
         curl \
         git \
         fzf \
         ripgrep \
         unzip \
-        wget \
         gcc \
         neovim \
-        fastfetch \
         diffutils \
         xclip \
         stylua \
-        tree \
         zsh && \
     pacman -Scc --noconfirm
 
@@ -32,12 +30,12 @@ RUN useradd -m -s /bin/zsh arch && \
 USER arch
 WORKDIR /home/arch
 
-# Install yay (AUR helper)
-RUN git clone https://aur.archlinux.org/yay.git && \
-    cd yay && \
-    makepkg -si --noconfirm && \
-    cd .. && \
-    rm -rf yay
+# Install yay (AUR helper) - no need to yay for playgound can install by docker ps into container
+#RUN git clone https://aur.archlinux.org/yay.git && \
+#    cd yay && \
+#    makepkg -si --noconfirm && \
+#    cd .. && \
+#    rm -rf yay
 
 # Install Oh My Zsh
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended && \
