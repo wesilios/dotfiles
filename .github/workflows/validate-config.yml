@@ -1,5 +1,3 @@
-name: Validate Neovim Configuration
-
 on:
   push:
     branches: ["master"]
@@ -29,15 +27,61 @@ jobs:
           mkdir -p ~/.config/nvim
           cp -r . ~/.config/nvim/
 
+      # 🔥 Install all plugins *before* loading init.vim
+      - name: Install plugins
+        run: |
+          nvim --headless -c "PlugInstall --sync" -c "qa"
+
+      # 🔥 Now validation will pass because gruvbox exists
       - name: Validate configuration syntax
         run: |
           nvim --headless -c "try | source ~/.config/nvim/init.vim | catch | cquit 1 | endtry | quit"
-
-      - name: Test plugin installation
-        run: |
-          nvim --headless -c "PlugInstall --sync" -c "qa"
 
       - name: Basic functionality test
         run: |
           echo "Testing Neovim functionality..."
           nvim --headless -c "echo 'Configuration loaded successfully'" -c "quit"
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  validate-config:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Neovim
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: stable
+
+      - name: Install vim-plug
+        run: |
+          curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+      - name: Copy configuration files
+        run: |
+          mkdir -p ~/.config/nvim
+          cp -r . ~/.config/nvim/
+
+      # 🔥 Install all plugins *before* loading init.vim
+      - name: Install plugins
+        run: |
+          nvim --headless -c "PlugInstall --sync" -c "qa"
+
+      # 🔥 Now validation will pass because gruvbox exists
+      - name: Validate configuration syntax
+        run: |
+          nvim --headless -c "try | source ~/.config/nvim/init.vim | catch | cquit 1 | endtry | quit"
+
+      - name: Basic functionality test
+        run: |
+          echo "Testing Neovim functionality..."
+          nvim --headless -c "echo 'Configuration loaded successfully'" -c "quit"
+
