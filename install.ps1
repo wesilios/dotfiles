@@ -45,6 +45,21 @@ if (-not (Test-Command python)) {
     Write-Host "[OK] Python found: $(python --version)" -ForegroundColor Green
 }
 
+# Check optional but important tools
+if (-not (Test-Command rg)) {
+    Write-Host "[!] Ripgrep not found (REQUIRED for nvim.lazy live grep)" -ForegroundColor Yellow
+    Write-Host "    Install: choco install ripgrep" -ForegroundColor Cyan
+} else {
+    Write-Host "[OK] Ripgrep found: $(rg --version | Select-Object -First 1)" -ForegroundColor Green
+}
+
+if (-not (Test-Command fd)) {
+    Write-Host "[!] fd not found (optional, improves file finding)" -ForegroundColor Yellow
+    Write-Host "    Install: choco install fd" -ForegroundColor Cyan
+} else {
+    Write-Host "[OK] fd found" -ForegroundColor Green
+}
+
 if ($missingPrereqs.Count -gt 0) {
     Write-Host "`nMissing prerequisites: $($missingPrereqs -join ', ')" -ForegroundColor Red
     Write-Host "Please install them first." -ForegroundColor Yellow
@@ -128,9 +143,25 @@ if ($selectedConfig -eq "lazy") {
     Write-Host "  2. Plugins will auto-install on first launch"
     Write-Host "  3. Run health check: :checkhealth"
     Write-Host ""
-    Write-Host "Optional formatters:" -ForegroundColor Yellow
-    Write-Host "  - Lua: stylua"
-    Write-Host "  - JavaScript/TypeScript: prettier"
+
+    # Check if ripgrep is missing and warn
+    if (-not (Test-Command rg)) {
+        Write-Host "IMPORTANT: Ripgrep is REQUIRED for live grep functionality!" -ForegroundColor Red
+        Write-Host "  The following keymaps will NOT work without ripgrep:" -ForegroundColor Yellow
+        Write-Host "    - <leader>fg (live grep)" -ForegroundColor Yellow
+        Write-Host "    - <leader>ps (grep search)" -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "  Install ripgrep:" -ForegroundColor Cyan
+        Write-Host "    choco install ripgrep" -ForegroundColor White
+        Write-Host "    OR scoop install ripgrep" -ForegroundColor White
+        Write-Host "    OR winget install BurntSushi.ripgrep.MSVC" -ForegroundColor White
+        Write-Host ""
+    }
+
+    Write-Host "Optional but recommended tools:" -ForegroundColor Yellow
+    Write-Host "  - fd: choco install fd (faster file finding)" -ForegroundColor White
+    Write-Host "  - stylua: choco install stylua (Lua formatter)" -ForegroundColor White
+    Write-Host "  - prettier: npm install -g prettier (JS/TS formatter)" -ForegroundColor White
 } else {
     Write-Host "Next steps:" -ForegroundColor Yellow
     Write-Host "  1. Run nvim"

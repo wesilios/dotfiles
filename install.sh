@@ -65,6 +65,32 @@ else
     echo -e "${GREEN}[OK] Python3 found: $(python3 --version)${NC}"
 fi
 
+# Check optional but important tools
+if ! command_exists rg; then
+    echo -e "${YELLOW}[!] Ripgrep not found (REQUIRED for nvim.lazy live grep)${NC}"
+    if [ "$PLATFORM" = "Linux" ]; then
+        echo -e "${CYAN}    Install: sudo apt install ripgrep (Ubuntu/Debian)${NC}"
+        echo -e "${CYAN}            sudo pacman -S ripgrep (Arch)${NC}"
+        echo -e "${CYAN}            sudo dnf install ripgrep (Fedora)${NC}"
+    else
+        echo -e "${CYAN}    Install: brew install ripgrep${NC}"
+    fi
+else
+    echo -e "${GREEN}[OK] Ripgrep found: $(rg --version | head -n1)${NC}"
+fi
+
+if ! command_exists fd; then
+    echo -e "${YELLOW}[!] fd not found (optional, improves file finding)${NC}"
+    if [ "$PLATFORM" = "Linux" ]; then
+        echo -e "${CYAN}    Install: sudo apt install fd-find (Ubuntu/Debian)${NC}"
+        echo -e "${CYAN}            sudo pacman -S fd (Arch)${NC}"
+    else
+        echo -e "${CYAN}    Install: brew install fd${NC}"
+    fi
+else
+    echo -e "${GREEN}[OK] fd found${NC}"
+fi
+
 # Stop if prerequisites missing
 if [ ${#MISSING[@]} -gt 0 ]; then
     echo ""
@@ -190,9 +216,29 @@ if [ "$SELECTED_CONFIG" = "lazy" ]; then
     echo "  2. Plugins will auto-install on first launch"
     echo "  3. Run health check: :checkhealth"
     echo ""
-    echo -e "${YELLOW}Optional formatters:${NC}"
-    echo "  - Lua: stylua"
-    echo "  - JavaScript/TypeScript: prettier"
+
+    # Check if ripgrep is missing and warn
+    if ! command_exists rg; then
+        echo -e "${RED}IMPORTANT: Ripgrep is REQUIRED for live grep functionality!${NC}"
+        echo -e "${YELLOW}  The following keymaps will NOT work without ripgrep:${NC}"
+        echo -e "${YELLOW}    - <leader>fg (live grep)${NC}"
+        echo -e "${YELLOW}    - <leader>ps (grep search)${NC}"
+        echo ""
+        echo -e "${CYAN}  Install ripgrep:${NC}"
+        if [ "$PLATFORM" = "Linux" ]; then
+            echo "    sudo apt install ripgrep       # Ubuntu/Debian"
+            echo "    sudo pacman -S ripgrep         # Arch Linux"
+            echo "    sudo dnf install ripgrep       # Fedora"
+        else
+            echo "    brew install ripgrep           # macOS"
+        fi
+        echo ""
+    fi
+
+    echo -e "${YELLOW}Optional but recommended tools:${NC}"
+    echo "  - fd: faster file finding"
+    echo "  - stylua: Lua code formatter"
+    echo "  - prettier: JavaScript/TypeScript formatter (npm install -g prettier)"
 else
     echo -e "${YELLOW}Next steps:${NC}"
     echo "  1. Run nvim"
