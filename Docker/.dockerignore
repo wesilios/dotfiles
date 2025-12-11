@@ -1,25 +1,27 @@
+# Build context is repository root, so paths are relative to root
+
 # Version control
-../.git/
-../.gitignore
-../.gitattributes
+.git/
+.gitignore
+.gitattributes
 
 # Documentation (not needed in container)
 README.md
-DOCKER.minimal.md
-DOCKER.arch.md
-../README.md
-../nvim.lazy/README.md
-../nvim.plug/README.md
-../LICENSE
+LICENSE
+Docker/README.md
+Docker/DOCKER.minimal.md
+Docker/DOCKER.arch.md
+nvim.lazy/README.md
+nvim.plug/README.md
 
 # Installation scripts (not needed in container)
-post-install.sh
-../install.ps1
-../install.sh
+install.ps1
+install.sh
+Docker/post-install.sh
 
 # IDE and editor files
-../.vscode/
-../.idea/
+.vscode/
+.idea/
 *.swp
 *.swo
 *~
@@ -34,14 +36,14 @@ desktop.ini
 *.tmp
 
 # nvim.plug (if only using nvim.lazy in container)
-../nvim.plug/
+nvim.plug/
 
 # Neovim runtime files (will be generated in container)
-../nvim.lazy/.lazy/
-../nvim.lazy/.luarc.json
+nvim.lazy/.lazy/
+nvim.lazy/.luarc.json
 
 # Docker files (don't need to copy these into the image)
-Dockerfile
-Dockerfile.arch
-.dockerignore
+Docker/Dockerfile
+Docker/Dockerfile.arch
+Docker/.dockerignore
 

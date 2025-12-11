@@ -8,8 +8,8 @@ Two Docker options for running Neovim in isolated environments.
 **~200-300MB** | bash shell | Install tools as needed
 
 ```bash
-cd Docker
-docker build -t nvim-minimal .
+# Build from repository root (required)
+docker build -f Docker/Dockerfile -t nvim-minimal .
 docker run -it --rm nvim-minimal
 ```
 
@@ -17,8 +17,8 @@ docker run -it --rm nvim-minimal
 **~2.8GB** | zsh + oh-my-zsh | Everything pre-installed
 
 ```bash
-cd Docker
-docker build -f Dockerfile.arch -t nvim-arch .
+# Build from repository root (required)
+docker build -f Docker/Dockerfile.arch -t nvim-arch .
 docker run -it --rm nvim-arch
 ```
 
@@ -53,24 +53,26 @@ chmod +x post-install.sh
 
 ## 📖 Documentation
 
-- **[DOCKER.minimal.md](DOCKER.minimal.md)** - Complete minimal setup guide
-- **[DOCKER.arch.md](DOCKER.arch.md)** - Complete full setup guide
+- **[DOCKER.minimal.md](DOCKER.md)** - Complete minimal setup guide
+- **[DOCKER.arch.md](DOCKER-arch.md)** - Complete full setup guide
 - **[post-install.sh](post-install.sh)** - Interactive tool installer
 
 ## 🔧 Common Commands
 
 ```bash
-# Build from Docker directory
-cd Docker
-docker build -t nvim-minimal .
-docker build -f Dockerfile.arch -t nvim-arch .
+# Build (must be from repository root)
+docker build -f Docker/Dockerfile -t nvim-minimal .
+docker build -f Docker/Dockerfile.arch -t nvim-arch .
 
-# Run with volume mount
-docker run -it --rm -v $(pwd)/../projects:/home/arch/Projects nvim-minimal
+# Run with volume mount (from repo root)
+docker run -it --rm -v $(pwd)/projects:/home/arch/Projects nvim-minimal
 
 # Persistent container
 docker run -it --name nvim-dev nvim-minimal
 docker start -ai nvim-dev
+
+# Copy post-install script into container
+docker cp Docker/post-install.sh nvim-dev:/home/arch/
 ```
 
 ## 🎯 Which One to Choose?
@@ -89,5 +91,5 @@ docker start -ai nvim-dev
 
 ---
 
-**Note:** Build commands must be run from the `Docker/` directory, or use `-f Docker/Dockerfile` from root.
+**Important:** All build commands must be run from the **repository root** directory using `-f Docker/Dockerfile` or `-f Docker/Dockerfile.arch`. This is required because Docker needs access to the `nvim.lazy/` folder.
 

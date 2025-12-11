@@ -62,10 +62,11 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master
 # Create common directories
 RUN mkdir -p ~/Downloads ~/Documents ~/Projects ~/.config
 
-# Copy Neovim config last for better build caching (from parent directory)
-COPY --chown=arch:arch ../nvim.lazy/init.lua        ~/.config/nvim/init.lua
-COPY --chown=arch:arch ../nvim.lazy/lazy-lock.json  ~/.config/nvim/lazy-lock.json
-COPY --chown=arch:arch ../nvim.lazy/stylua.toml     ~/.config/nvim/stylua.toml
-COPY --chown=arch:arch ../nvim.lazy/lua             ~/.config/nvim/lua
+# Copy Neovim config last for better build caching
+# Note: Build from repo root with: docker build -f Docker/Dockerfile.arch -t nvim-arch .
+COPY --chown=arch:arch nvim.lazy/init.lua        ~/.config/nvim/init.lua
+COPY --chown=arch:arch nvim.lazy/lazy-lock.json  ~/.config/nvim/lazy-lock.json
+COPY --chown=arch:arch nvim.lazy/stylua.toml     ~/.config/nvim/stylua.toml
+COPY --chown=arch:arch nvim.lazy/lua             ~/.config/nvim/lua
 
 CMD ["zsh"]

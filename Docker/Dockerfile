@@ -50,11 +50,12 @@ RUN echo 'export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[0
 # Create directories
 RUN mkdir -p ~/Projects ~/.config
 
-# Copy Neovim configuration (from parent directory)
-COPY --chown=arch:arch ../nvim.lazy/init.lua /home/arch/.config/nvim/init.lua
-COPY --chown=arch:arch ../nvim.lazy/lazy-lock.json /home/arch/.config/nvim/lazy-lock.json
-COPY --chown=arch:arch ../nvim.lazy/stylua.toml /home/arch/.config/nvim/stylua.toml
-COPY --chown=arch:arch ../nvim.lazy/lua /home/arch/.config/nvim/lua
+# Copy Neovim configuration
+# Note: Build from repo root with: docker build -f Docker/Dockerfile -t nvim-minimal .
+COPY --chown=arch:arch nvim.lazy/init.lua /home/arch/.config/nvim/init.lua
+COPY --chown=arch:arch nvim.lazy/lazy-lock.json /home/arch/.config/nvim/lazy-lock.json
+COPY --chown=arch:arch nvim.lazy/stylua.toml /home/arch/.config/nvim/stylua.toml
+COPY --chown=arch:arch nvim.lazy/lua /home/arch/.config/nvim/lua
 
 # Default command
 CMD ["bash"]

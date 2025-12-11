@@ -55,20 +55,14 @@ This is a **complete, ready-to-use** Neovim development environment.
 
 ### Build the Image
 ```bash
-# From Docker directory
-cd Docker
-docker build -f Dockerfile.arch -t nvim-arch .
-
-# Or from root directory
+# Must build from repository root (required for nvim.lazy/ access)
 docker build -f Docker/Dockerfile.arch -t nvim-arch .
 
 # Build with BuildKit (faster, recommended)
-cd Docker
-DOCKER_BUILDKIT=1 docker build -f Dockerfile.arch -t nvim-arch .
+DOCKER_BUILDKIT=1 docker build -f Docker/Dockerfile.arch -t nvim-arch .
 
 # Build without cache (fresh build)
-cd Docker
-docker build -f Dockerfile.arch --no-cache -t nvim-arch .
+docker build -f Docker/Dockerfile.arch --no-cache -t nvim-arch .
 ```
 
 ### Run the Container

@@ -142,13 +142,11 @@ Try Neovim in isolated Docker environments without affecting your system.
 
 ```bash
 # Minimal setup (recommended for learning)
-cd Docker
-docker build -t nvim-minimal .
+docker build -f Docker/Dockerfile -t nvim-minimal .
 docker run -it --rm nvim-minimal
 
 # Full setup (complete dev environment)
-cd Docker
-docker build -f Dockerfile.arch -t nvim-arch .
+docker build -f Docker/Dockerfile.arch -t nvim-arch .
 docker run -it --rm nvim-arch
 ```
 

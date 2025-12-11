@@ -45,16 +45,14 @@ This is the **absolute bare minimum** to run Neovim with essential plugins.
 
 ### Build the Image
 ```bash
-# From Docker directory
-cd Docker
-docker build -t nvim-minimal .
-
-# Or from root directory
+# Must build from repository root (required for nvim.lazy/ access)
 docker build -f Docker/Dockerfile -t nvim-minimal .
 
-# Build with BuildKit (faster)
-cd Docker
-DOCKER_BUILDKIT=1 docker build -t nvim-minimal .
+# Build with BuildKit (faster, recommended)
+DOCKER_BUILDKIT=1 docker build -f Docker/Dockerfile -t nvim-minimal .
+
+# Build without cache (fresh build)
+docker build -f Docker/Dockerfile --no-cache -t nvim-minimal .
 ```
 
 ### Run the Container
