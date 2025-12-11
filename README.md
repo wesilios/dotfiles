@@ -13,7 +13,7 @@ My personal Neovim configurations with support for multiple plugin managers.
 
 ```
 .
-├── Dockerfile              # Docker environment (Arch Linux)
+├── Docker/                # Docker containers (Alpine & Arch)
 ├── LICENSE
 ├── README.md              # This file
 ├── install.ps1            # Windows installer
@@ -130,28 +130,29 @@ xcode-select --install  # For C compiler
 - Windows (32/64-bit)
 - Linux (Ubuntu, Debian, Arch, Fedora, RHEL)
 - macOS
-- Docker (Arch Linux playground)
+- Docker (Alpine & Arch Linux containers)
 
-## 🐳 Docker Playground
+## 🐳 Docker Containers
 
-Try the configuration in an isolated Arch Linux environment without affecting your system:
+Try Neovim in isolated Docker environments without affecting your system.
+
+**Two options available:**
+- **Minimal (Alpine):** ~200-300MB, bare essentials, install tools as needed
+- **Full (Arch):** ~2.8GB, everything pre-installed, ready to use
 
 ```bash
-# Build the image
-docker build -t nvim-playground .
+# Minimal setup (recommended for learning)
+cd Docker
+docker build -t nvim-minimal .
+docker run -it --rm nvim-minimal
 
-# Run interactively
-docker run -it --rm nvim-playground
-
-# Inside the container, launch Neovim
-nvim
+# Full setup (complete dev environment)
+cd Docker
+docker build -f Dockerfile.arch -t nvim-arch .
+docker run -it --rm nvim-arch
 ```
 
-The Docker image includes:
-- Neovim with nvim.lazy configuration pre-installed
-- **yay** AUR helper for installing additional packages
-- Oh My Zsh with agnoster theme
-- Common tools: fzf, ripgrep, stylua, tree
+**📖 See [Docker/README.md](Docker/README.md) for complete documentation.**
 
 ## 🔗 Useful Links
 
