@@ -22,6 +22,7 @@ require('nvim-treesitter.configs').setup({
     'json',
     'json5',
     'vue',
+    'dockerfile',
   },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
