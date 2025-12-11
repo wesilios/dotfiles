@@ -13,12 +13,12 @@ My personal Neovim configurations with support for multiple plugin managers.
 
 ```
 .
-├── Dockerfile
+├── Dockerfile              # Docker environment (Arch Linux)
 ├── LICENSE
-├── README.md
-├── install.ps1
-├── install.sh
-├── nvim.lazy
+├── README.md              # This file
+├── install.ps1            # Windows installer
+├── install.sh             # Linux/macOS installer
+├── nvim.lazy              # ✅ Recommended configuration
 │   ├── README.md
 │   ├── init.lua
 │   ├── lazy-lock.json
@@ -41,7 +41,7 @@ My personal Neovim configurations with support for multiple plugin managers.
 │   │       │   └── yanky.lua
 │   │       └── init.lua
 │   └── stylua.toml
-└── nvim.plug
+└── nvim.plug              # ⚠️ Deprecated configuration
     ├── README.md
     ├── autoload
     │   └── plug.vim
@@ -68,16 +68,65 @@ cp -r neovim.config/nvim.lazy ~/.config/nvim
 
 See [nvim.lazy/README.md](./nvim.lazy/README.md) for detailed setup instructions.
 
-## Requirements
+## 📋 Requirements
 
-- **Neovim 0.11.5+** (for nvim.lazy)
-- **Git**
-- **Nerd Font** (for icons)
+### nvim.lazy (Recommended)
+See [nvim.lazy/README.md](./nvim.lazy/README.md#-requirements) for complete requirements and dependencies.
+
+**Quick summary:**
+- Neovim 0.11.5+, Git, Nerd Font
+- **Ripgrep** (required for live grep)
+- C compiler (for Treesitter)
+- Optional: fd, stylua, prettier
+
+### nvim.plug (Deprecated)
+⚠️ **DEPRECATED** - Use nvim.lazy instead
+- Neovim 0.5+, Git, **Node.js & npm** (required for CoC)
+- fzf, Python 3
+- Build tools (platform-specific)
+
+---
+
+## 💾 Installation by Platform
+
+### 🪟 Windows
+```powershell
+# Via Chocolatey (recommended)
+choco install neovim git ripgrep gcc
+
+# Via Scoop
+scoop install neovim git ripgrep gcc
+
+# Via winget
+winget install Neovim.Neovim Git.Git BurntSushi.ripgrep.MSVC
+```
+
+### 🐧 Linux
+```bash
+# Debian/Ubuntu
+sudo apt install neovim git ripgrep build-essential
+
+# Arch Linux
+sudo pacman -S neovim git ripgrep base-devel
+
+# Fedora/RHEL
+sudo dnf install neovim git ripgrep gcc make
+```
+
+### 🍎 macOS
+```bash
+brew install neovim git ripgrep
+xcode-select --install  # For C compiler
+```
+
+📋 **For detailed installation instructions, optional tools, and troubleshooting, see [nvim.lazy/README.md](./nvim.lazy/README.md#-installation-guide)**
+
+---
 
 ## Platform Support
 
 - Windows (32/64-bit)
-- Linux
+- Linux (Ubuntu, Debian, Arch, Fedora, RHEL)
 - macOS
 - Docker (Arch Linux playground)
 
@@ -101,6 +150,18 @@ The Docker image includes:
 - **yay** AUR helper for installing additional packages
 - Oh My Zsh with agnoster theme
 - Common tools: fzf, ripgrep, stylua, tree
+
+## 🔗 Useful Links
+
+- [Neovim](https://neovim.io/)
+- [Ripgrep](https://github.com/BurntSushi/ripgrep)
+- [fd](https://github.com/sharkdp/fd)
+- [fzf](https://github.com/junegunn/fzf)
+- [Nerd Fonts](https://www.nerdfonts.com/)
+- [lazy.nvim](https://github.com/folke/lazy.nvim)
+- [Telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
+
+---
 
 ## License
 
