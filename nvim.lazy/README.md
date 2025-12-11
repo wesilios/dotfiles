@@ -1,4 +1,4 @@
-# 🌿 My Neovim Configuration
+# 🌿 Neovim lazy Configuration
 
 A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, focusing on:
 
@@ -53,6 +53,7 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 | **Nerd Font** | Icons | nvim-web-devicons, lualine |
 | **Ripgrep (rg)** | Text search | Telescope live_grep, grep_string |
 | **C Compiler** | Build parsers | nvim-treesitter compilation |
+| **Luarocks** | Lua package manager | lazy.nvim plugin management |
 
 #### C Compiler by Platform
 - **Windows**: gcc (via MinGW, TDM-GCC, or MSYS2), clang, or MSVC
@@ -66,6 +67,8 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 | **fd** | Fast file finder | Telescope find_files | Falls back to slower find/rg |
 | **stylua** | Lua formatter | conform.nvim | Lua formatting won't work |
 | **prettier** | JS/TS/CSS/HTML formatter | conform.nvim | Web formatting won't work |
+| **python3** | Language support | LSP servers, some plugins | Python development features unavailable |
+| **Node.js** | JavaScript runtime | LSP servers, prettier | JS/TS development features limited |
 
 ### Plugin Dependencies Summary
 
@@ -93,19 +96,19 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 **Via Chocolatey (Recommended):**
 ```powershell
 # Core dependencies
-choco install neovim git ripgrep gcc
+choco install neovim git ripgrep mingw lua luarocks -y
 
 # Optional tools
-choco install fd stylua
+choco install fd stylua python3 nodejs -y
 
 # Formatters (if needed)
-npm install -g prettier
+npm install -g prettier neovim
 ```
 
 **Via Scoop:**
 ```powershell
-scoop install neovim git ripgrep gcc
-scoop install fd stylua
+scoop install neovim git ripgrep mingw lua luarocks
+scoop install fd stylua python3 nodejs
 npm install -g prettier
 ```
 
@@ -115,6 +118,7 @@ winget install Neovim.Neovim
 winget install Git.Git
 winget install BurntSushi.ripgrep.MSVC
 # For gcc, install MinGW or use Visual Studio Build Tools
+# For Lua/Luarocks, use Chocolatey: choco install lua luarocks -y
 ```
 
 **Note:** For Treesitter on Windows, you need a C compiler. Options:
@@ -128,10 +132,10 @@ winget install BurntSushi.ripgrep.MSVC
 ```bash
 # Core dependencies
 sudo apt update
-sudo apt install neovim git ripgrep build-essential
+sudo apt install neovim git ripgrep build-essential luarocks
 
 # Optional tools
-sudo apt install fd-find
+sudo apt install fd-find python3 python3-pip nodejs npm
 
 # Formatters
 cargo install stylua  # Requires Rust
@@ -141,10 +145,10 @@ npm install -g prettier
 **Arch Linux:**
 ```bash
 # Core dependencies
-sudo pacman -S neovim git ripgrep base-devel
+sudo pacman -S neovim git ripgrep base-devel luarocks
 
 # Optional tools
-sudo pacman -S fd stylua
+sudo pacman -S fd stylua python python-pip nodejs npm
 
 # Formatters
 npm install -g prettier
@@ -153,10 +157,10 @@ npm install -g prettier
 **Fedora/RHEL:**
 ```bash
 # Core dependencies
-sudo dnf install neovim git ripgrep gcc make
+sudo dnf install neovim git ripgrep gcc make luarocks
 
 # Optional tools
-sudo dnf install fd-find
+sudo dnf install fd-find python3 python3-pip nodejs npm
 
 # Formatters
 cargo install stylua
@@ -168,13 +172,13 @@ npm install -g prettier
 **Using Homebrew:**
 ```bash
 # Core dependencies
-brew install neovim git ripgrep
+brew install neovim git ripgrep luarocks
 
 # C compiler (Xcode Command Line Tools)
 xcode-select --install
 
 # Optional tools
-brew install fd stylua
+brew install fd stylua python3 node
 
 # Formatters
 npm install -g prettier
@@ -223,8 +227,11 @@ Check for missing dependencies:
 nvim --version
 git --version
 rg --version
-gcc --version  # or clang --version
-fd --version   # optional
+gcc --version      # or clang --version
+luarocks --version
+fd --version       # optional
+python3 --version  # optional
+node --version     # optional
 ```
 
 ---
@@ -439,6 +446,70 @@ rg --version
 **Problem: File finding is slow**
 - Install `fd` for faster file finding
 - Telescope will automatically use it if available
+
+### Luarocks Issues
+
+**Problem: "luarocks not installed" error**
+
+Luarocks is **required** for lazy.nvim plugin management. Install it on your platform:
+
+**🪟 Windows:**
+```powershell
+# Via Chocolatey (Recommended)
+choco install lua luarocks -y
+
+# Via Scoop
+scoop install lua luarocks
+
+# Verify installation
+luarocks --version
+```
+
+**🐧 Linux (Debian/Ubuntu):**
+```bash
+sudo apt update
+sudo apt install luarocks
+
+# Verify installation
+luarocks --version
+```
+
+**🐧 Linux (Arch):**
+```bash
+sudo pacman -S luarocks
+
+# Verify installation
+luarocks --version
+```
+
+**🐧 Linux (Fedora/RHEL):**
+```bash
+sudo dnf install luarocks
+
+# Verify installation
+luarocks --version
+```
+
+**🍎 macOS:**
+```bash
+brew install luarocks
+
+# Verify installation
+luarocks --version
+```
+
+After installing, restart Neovim and run `:Lazy sync`
+
+**Note:** If you don't want to use luarocks, you can disable it by adding this to `lua/plugins/init.lua`:
+```lua
+require('lazy').setup({
+  -- ... plugins ...
+}, {
+  rocks = {
+    enabled = false,
+  },
+})
+```
 
 ### Treesitter Issues
 

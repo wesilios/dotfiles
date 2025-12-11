@@ -76,8 +76,9 @@ See [nvim.lazy/README.md](./nvim.lazy/README.md#-requirements) for complete requ
 **Quick summary:**
 - Neovim 0.11.5+, Git, Nerd Font
 - **Ripgrep** (required for live grep)
+- **Luarocks** (required for plugin management)
 - C compiler (for Treesitter)
-- Optional: fd, stylua, prettier
+- Optional: fd, stylua, prettier, python3, nodejs
 
 ### nvim.plug (Deprecated)
 ⚠️ **DEPRECATED** - Use nvim.lazy instead
@@ -92,30 +93,31 @@ See [nvim.lazy/README.md](./nvim.lazy/README.md#-requirements) for complete requ
 ### 🪟 Windows
 ```powershell
 # Via Chocolatey (recommended)
-choco install neovim git ripgrep gcc
+choco install neovim git ripgrep mingw lua luarocks -y
 
 # Via Scoop
-scoop install neovim git ripgrep gcc
+scoop install neovim git ripgrep mingw lua luarocks
 
 # Via winget
 winget install Neovim.Neovim Git.Git BurntSushi.ripgrep.MSVC
+# For MinGW and Luarocks, use Chocolatey: choco install mingw lua luarocks -y
 ```
 
 ### 🐧 Linux
 ```bash
 # Debian/Ubuntu
-sudo apt install neovim git ripgrep build-essential
+sudo apt install neovim git ripgrep build-essential luarocks
 
 # Arch Linux
-sudo pacman -S neovim git ripgrep base-devel
+sudo pacman -S neovim git ripgrep base-devel luarocks
 
 # Fedora/RHEL
-sudo dnf install neovim git ripgrep gcc make
+sudo dnf install neovim git ripgrep gcc make luarocks
 ```
 
 ### 🍎 macOS
 ```bash
-brew install neovim git ripgrep
+brew install neovim git ripgrep luarocks
 xcode-select --install  # For C compiler
 ```
 

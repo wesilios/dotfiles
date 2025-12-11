@@ -9,9 +9,7 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
 # Check if running as Administrator
-$isAdmin = ([Security.Principal.WindowsPrincipal] 
-   [Security.Principal.WindowsIdentity]::GetCurrent()
-).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 if (-not $isAdmin) {
     Write-Host "Warning: Not running as Administrator." -ForegroundColor Yellow
@@ -58,6 +56,19 @@ if (-not (Test-Command fd)) {
     Write-Host "    Install: choco install fd" -ForegroundColor Cyan
 } else {
     Write-Host "[OK] fd found" -ForegroundColor Green
+}
+
+# Check for C compiler (required for Treesitter)
+if (-not (Test-Command gcc) -and -not (Test-Command clang)) {
+    Write-Host "[!] C compiler not found (REQUIRED for nvim-treesitter)" -ForegroundColor Yellow
+    Write-Host "    Install MinGW: choco install mingw" -ForegroundColor Cyan
+    Write-Host "    Or TDM-GCC: https://jmeubank.github.io/tdm-gcc/" -ForegroundColor Cyan
+} else {
+    if (Test-Command gcc) {
+        Write-Host "[OK] gcc found: $(gcc --version | Select-Object -First 1)" -ForegroundColor Green
+    } else {
+        Write-Host "[OK] clang found: $(clang --version | Select-Object -First 1)" -ForegroundColor Green
+    }
 }
 
 if ($missingPrereqs.Count -gt 0) {
