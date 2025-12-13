@@ -95,12 +95,34 @@ Write-Host "`nSetting up Neovim configuration..." -ForegroundColor Yellow
 
 $nvimConfigPath = "$env:LOCALAPPDATA\nvim"
 $nvimDataPath   = "$env:LOCALAPPDATA\nvim-data"
+$backupPath     = $null
 
-# Backup existing config
+# Handle existing config
 if (Test-Path $nvimConfigPath) {
-    $backupPath = "$nvimConfigPath.backup.$(Get-Date -Format 'yyyyMMdd_HHmmss')"
-    Move-Item $nvimConfigPath $backupPath -Force
-    Write-Host "Existing config backed up -> $backupPath" -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "Existing Neovim configuration found at: $nvimConfigPath" -ForegroundColor Yellow
+    Write-Host "What would you like to do?" -ForegroundColor Cyan
+    Write-Host "  1. Backup" -ForegroundColor Green -NoNewline
+    Write-Host " - Create timestamped backup of old config"
+    Write-Host "  2. Remove" -ForegroundColor Red -NoNewline
+    Write-Host " - Delete old config (cannot be undone)"
+    Write-Host ""
+
+    $backupChoice = Read-Host "Enter your choice (1/2, default 1)"
+
+    switch ($backupChoice) {
+        "2" {
+            Write-Host "Removing existing config..." -ForegroundColor Red
+            Remove-Item -Path $nvimConfigPath -Recurse -Force
+            Write-Host "[OK] Old config removed" -ForegroundColor Green
+        }
+        default {
+            $backupPath = "$nvimConfigPath.backup.$(Get-Date -Format 'yyyyMMdd_HHmmss')"
+            Write-Host "Backing up existing config to: $backupPath" -ForegroundColor Yellow
+            Move-Item $nvimConfigPath $backupPath -Force
+            Write-Host "[OK] Old config backed up" -ForegroundColor Green
+        }
+    }
 }
 
 # Copy correct config folder based on selection
@@ -147,6 +169,13 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Installation Complete!" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
+
+# Display backup information if backup was created
+if ($backupPath) {
+    Write-Host "Old configuration backed up to:" -ForegroundColor Cyan
+    Write-Host "  $backupPath" -ForegroundColor Yellow
+    Write-Host ""
+}
 
 if ($selectedConfig -eq "lazy") {
     Write-Host "Next steps:" -ForegroundColor Yellow

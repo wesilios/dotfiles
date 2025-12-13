@@ -136,12 +136,31 @@ echo -e "${YELLOW}Setting up Neovim configuration...${NC}"
 
 CONFIG="$HOME/.config/nvim"
 DATA="$HOME/.local/share/nvim"
+BACKUP_PATH=""
 
-# Backup existing config
+# Handle existing config
 if [ -d "$CONFIG" ]; then
-    BACKUP="${CONFIG}.backup.$(date +%Y%m%d_%H%M%S)"
-    echo -e "${YELLOW}Backing up existing config to: ${BACKUP}${NC}"
-    mv "$CONFIG" "$BACKUP"
+    echo ""
+    echo -e "${YELLOW}Existing Neovim configuration found at: ${CONFIG}${NC}"
+    echo -e "${CYAN}What would you like to do?${NC}"
+    echo -e "  ${GREEN}1. Backup${NC} - Create timestamped backup of old config"
+    echo -e "  ${RED}2. Remove${NC} - Delete old config (cannot be undone)"
+    echo ""
+    read -p "Enter your choice (1/2, default 1): " BACKUP_CHOICE
+
+    case "$BACKUP_CHOICE" in
+        2)
+            echo -e "${RED}Removing existing config...${NC}"
+            rm -rf "$CONFIG"
+            echo -e "${GREEN}[OK] Old config removed${NC}"
+            ;;
+        *)
+            BACKUP_PATH="${CONFIG}.backup.$(date +%Y%m%d_%H%M%S)"
+            echo -e "${YELLOW}Backing up existing config to: ${BACKUP_PATH}${NC}"
+            mv "$CONFIG" "$BACKUP_PATH"
+            echo -e "${GREEN}[OK] Old config backed up${NC}"
+            ;;
+    esac
 fi
 
 # Copy config
@@ -209,6 +228,13 @@ echo -e "${CYAN}========================================${NC}"
 echo -e "${GREEN}  Installation Complete!${NC}"
 echo -e "${CYAN}========================================${NC}"
 echo ""
+
+# Display backup information if backup was created
+if [ -n "$BACKUP_PATH" ]; then
+    echo -e "${CYAN}Old configuration backed up to:${NC}"
+    echo -e "${YELLOW}  $BACKUP_PATH${NC}"
+    echo ""
+fi
 
 if [ "$SELECTED_CONFIG" = "lazy" ]; then
     echo -e "${YELLOW}Next steps:${NC}"
