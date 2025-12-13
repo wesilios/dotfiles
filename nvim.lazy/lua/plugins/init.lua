@@ -188,4 +188,10 @@ require('lazy').setup({
     'ramboe/ramboe-dotnet-utils',
     dependencies = { 'mfussenegger/nvim-dap' },
   },
+  {
+    'numToStr/Comment.nvim',
+    config = function()
+      require(configpath .. 'comment')
+    end,
+  },
 })
