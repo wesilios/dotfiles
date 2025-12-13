@@ -31,8 +31,10 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
     |       |   |-- lualine.lua
     |       |   |-- mason.lua
     |       |   |-- neotest.lua
+    |       |   |-- nvim-cmp.lua
     |       |   |-- nvim-dap.lua
     |       |   |-- nvim-dap-ui.lua
+    |       |   |-- roslyn.lua
     |       |   |-- telescope.lua
     |       |   |-- treesitter.lua
     |       |   |-- undotree.lua
@@ -87,6 +89,9 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 | vim-fugitive | Git (required) | Git integration |
 | mason.nvim | None | LSP/DAP package manager |
 | nvim-lspconfig | Language servers via Mason | Install via `:MasonInstall` |
+| nvim-cmp | None | Completion engine |
+| cmp-nvim-lsp | nvim-cmp | LSP completion source |
+| LuaSnip | None | Snippet engine |
 | roslyn.nvim | roslyn (via Mason) | C# language server |
 | nvim-dap | Debug adapters via Mason | Install via `:MasonInstall` |
 | nvim-dap-ui | nvim-dap, nvim-nio | Debug UI |
@@ -353,11 +358,28 @@ This configuration includes full LSP (Language Server Protocol) and DAP (Debug A
 - **C#** - `roslyn` (Roslyn Language Server)
 
 **LSP Features:**
-- Code completion
-- Go to definition
-- Hover documentation
-- Code diagnostics
-- Signature help
+- **Code completion** (via nvim-cmp)
+  - LSP-based completions
+  - Snippet support (LuaSnip)
+  - Buffer and path completions
+  - Ghost text preview
+- **Auto-import** (via code actions `<leader>ca`)
+  - Automatically add missing `using` statements (C#)
+  - Import suggestions from unimported namespaces
+- **Go to definition** (`gd`)
+- **Hover documentation** (`K`)
+- **Code diagnostics** with inline hints
+- **Signature help** (`<Ctrl-k>`)
+- **Inlay hints** for types and parameters
+- **Code lens** for references and tests
+- **Rename refactoring** (`<leader>rn`)
+
+**Completion Plugin:**
+- **nvim-cmp** - Modern completion engine
+- **cmp-nvim-lsp** - LSP completion source
+- **LuaSnip** - Snippet engine
+- **cmp-buffer** - Buffer word completions
+- **cmp-path** - File path completions
 
 **Mason Installation:**
 
@@ -385,6 +407,24 @@ Then install the required language servers:
 ```
 
 **Note:** The `roslyn` language server requires the custom Mason registry (`github:Crashdummyy/mason-registry`) which is already configured in `mason.lua`.
+
+**LSP Usage Example (C#):**
+
+1. Open a C# file in a project with a `.csproj` or `.sln` file
+2. Wait for "LSP attached: roslyn" message in the status line
+3. Start typing to see completions:
+   ```csharp
+   // Type and see completions automatically
+   var list = new List<string>();
+
+   // Hover over 'List' with K to see documentation
+   // Press <leader>ca on 'List' to add missing using statement
+   // Press gd on 'List' to go to definition
+   ```
+4. Use `<Ctrl-Space>` to manually trigger completions
+5. Use `<leader>ca` for code actions (auto-import, quick fixes)
+6. Use `K` to see hover documentation
+7. Use `gd` to go to definition
 
 ### DAP (Debug Adapter Protocol)
 
@@ -495,6 +535,38 @@ Install debug adapters via Mason:
 | Keymap | Mode | Description |
 |--------|------|-------------|
 | `<leader>cf` | Normal/Visual | Format buffer with Conform |
+
+### LSP (Language Server Protocol)
+| Keymap | Mode | Description |
+|--------|------|-------------|
+| `gd` | Normal | Go to definition |
+| `gD` | Normal | Go to declaration |
+| `K` | Normal | Hover documentation |
+| `gi` | Normal | Go to implementation |
+| `<Ctrl-k>` | Normal/Insert | Signature help |
+| `<leader>ca` | Normal/Visual | Code action (includes auto-import) |
+| `<leader>rn` | Normal | Rename symbol |
+| `gr` | Normal | Go to references |
+| `<leader>lf` | Normal | Format buffer (LSP) |
+| `<leader>e` | Normal | Show diagnostics in floating window |
+| `[d` | Normal | Go to previous diagnostic |
+| `]d` | Normal | Go to next diagnostic |
+| `<leader>dl` | Normal | Show all diagnostics in location list |
+| `<leader>D` | Normal | Go to type definition |
+| `<leader>ws` | Normal | Workspace symbols |
+
+### Completion (nvim-cmp)
+| Keymap | Mode | Description |
+|--------|------|-------------|
+| `<Ctrl-Space>` | Insert | Trigger completion manually |
+| `<Ctrl-n>` | Insert | Select next completion item |
+| `<Ctrl-p>` | Insert | Select previous completion item |
+| `<Tab>` | Insert | Select next item / expand snippet |
+| `<Shift-Tab>` | Insert | Select previous item |
+| `<CR>` | Insert | Confirm selection |
+| `<Ctrl-e>` | Insert | Abort completion |
+| `<Ctrl-b>` | Insert | Scroll documentation up |
+| `<Ctrl-f>` | Insert | Scroll documentation down |
 
 ### DAP (Debugging)
 | Keymap | Mode | Description |

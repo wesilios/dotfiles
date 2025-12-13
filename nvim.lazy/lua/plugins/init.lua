@@ -111,9 +111,32 @@ require('lazy').setup({
     end,
   },
   {
-    ft = { 'cs', 'razor' },
+    'hrsh7th/nvim-cmp',
+    event = 'InsertEnter',
+    dependencies = {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+    },
+    config = function()
+      require(configpath .. 'nvim-cmp')
+    end,
+  },
+  { 'hrsh7th/cmp-nvim-lsp' },
+  { 'hrsh7th/cmp-buffer' },
+  { 'hrsh7th/cmp-path' },
+  { 'hrsh7th/cmp-cmdline' },
+  { 'L3MON4D3/LuaSnip' },
+  { 'saadparwaiz1/cmp_luasnip' },
+  {
     'seblyng/roslyn.nvim',
-    opts = {},
+    ft = { 'cs', 'razor' },
+    config = function()
+      require(configpath .. 'roslyn')
+    end,
   },
   {
     -- Debug Framework
