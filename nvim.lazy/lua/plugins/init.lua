@@ -98,4 +98,71 @@ require('lazy').setup({
       require(configpath .. 'lualine')
     end,
   },
+  {
+    'neovim/nvim-lspconfig',
+    config = function()
+      require(configpath .. 'lsp')
+    end,
+  },
+  {
+    'williamboman/mason.nvim',
+    config = function()
+      require(configpath .. 'mason')
+    end,
+  },
+  {
+    ft = { 'cs', 'razor' },
+    'seblyng/roslyn.nvim',
+    opts = {},
+  },
+  {
+    -- Debug Framework
+    'mfussenegger/nvim-dap',
+    dependencies = {
+      'rcarriga/nvim-dap-ui',
+    },
+    config = function()
+      require(configpath .. 'nvim-dap')
+    end,
+    event = 'VeryLazy',
+  },
+  { 'nvim-neotest/nvim-nio' },
+  {
+    -- UI for debugging
+    'rcarriga/nvim-dap-ui',
+    dependencies = {
+      'mfussenegger/nvim-dap',
+    },
+    config = function()
+      require(configpath .. 'nvim-dap-ui')
+    end,
+  },
+  {
+    'nvim-neotest/neotest',
+    requires = {
+      {
+        'Issafalcon/neotest-dotnet',
+      },
+    },
+    dependencies = {
+      'nvim-neotest/nvim-nio',
+      'nvim-lua/plenary.nvim',
+      'antoinemadec/FixCursorHold.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    config = function()
+      require(configpath .. 'neotest')
+    end,
+  },
+  {
+    'Issafalcon/neotest-dotnet',
+    lazy = false,
+    dependencies = {
+      'nvim-neotest/neotest',
+    },
+  },
+  {
+    'ramboe/ramboe-dotnet-utils',
+    dependencies = { 'mfussenegger/nvim-dap' },
+  },
 })
