@@ -111,8 +111,8 @@ require('lazy').setup({
     end,
   },
   {
-    ft = { 'cs', 'razor' },
     'seblyng/roslyn.nvim',
+    ft = { 'cs', 'razor' },
     opts = {},
   },
   {
