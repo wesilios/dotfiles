@@ -27,7 +27,12 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
     |       |   |-- colorscheme.lua
     |       |   |-- conform.lua
     |       |   |-- harpoon.lua
+    |       |   |-- lsp.lua
     |       |   |-- lualine.lua
+    |       |   |-- mason.lua
+    |       |   |-- neotest.lua
+    |       |   |-- nvim-dap.lua
+    |       |   |-- nvim-dap-ui.lua
     |       |   |-- telescope.lua
     |       |   |-- treesitter.lua
     |       |   |-- undotree.lua
@@ -80,6 +85,13 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 | lualine.nvim | Nerd Font (required) | Icons won't display correctly |
 | nvim-web-devicons | Nerd Font (required) | Icons won't display correctly |
 | vim-fugitive | Git (required) | Git integration |
+| mason.nvim | None | LSP/DAP package manager |
+| nvim-lspconfig | Language servers via Mason | Install via `:MasonInstall` |
+| roslyn.nvim | roslyn (via Mason) | C# language server |
+| nvim-dap | Debug adapters via Mason | Install via `:MasonInstall` |
+| nvim-dap-ui | nvim-dap, nvim-nio | Debug UI |
+| neotest | nvim-treesitter | Test runner framework |
+| neotest-dotnet | neotest, netcoredbg | .NET test adapter |
 | harpoon | None | Pure Lua |
 | yanky.nvim | None | Pure Lua |
 | undotree | None | Pure Lua |
@@ -305,11 +317,20 @@ gruvbox.nvim
 harpoon
 lazy.nvim
 lualine.nvim
+mason.nvim
+neotest
+neotest-dotnet
+nvim-dap
+nvim-dap-ui
+nvim-lspconfig
+nvim-nio
 nvim-treesitter
 nvim-web-devicons
 playground
 plenary.nvim
+ramboe-dotnet-utils
 rose-pine
+roslyn.nvim
 telescope.nvim
 tokyonight.nvim
 undotree
@@ -317,6 +338,80 @@ vim-fugitive
 which-key.nvim
 yanky.nvim
 ```
+
+---
+
+## 🔧 LSP & DAP Configuration
+
+This configuration includes full LSP (Language Server Protocol) and DAP (Debug Adapter Protocol) support for multiple languages.
+
+### LSP (Language Server Protocol)
+
+**Supported Languages:**
+- **Lua** - `lua-language-server` (luals)
+- **C/C++** - `clangd`
+- **C#** - `roslyn` (Roslyn Language Server)
+
+**LSP Features:**
+- Code completion
+- Go to definition
+- Hover documentation
+- Code diagnostics
+- Signature help
+
+**Mason Installation:**
+
+Mason is used to manage LSP servers and DAP adapters. Install language servers via Mason:
+
+```vim
+:Mason
+```
+
+Then install the required language servers:
+
+**For Lua:**
+```vim
+:MasonInstall lua-language-server
+```
+
+**For C/C++:**
+```vim
+:MasonInstall clangd
+```
+
+**For C#:**
+```vim
+:MasonInstall roslyn netcoredbg
+```
+
+**Note:** The `roslyn` language server requires the custom Mason registry (`github:Crashdummyy/mason-registry`) which is already configured in `mason.lua`.
+
+### DAP (Debug Adapter Protocol)
+
+**Supported Languages:**
+- **C#** - `netcoredbg` (for .NET Core debugging)
+
+**DAP Features:**
+- Breakpoint management
+- Step through code (step over, step into, step out)
+- Variable inspection
+- Debug REPL
+- Automatic UI opening/closing
+- Unit test debugging with Neotest
+
+**Mason Installation:**
+
+Install debug adapters via Mason:
+
+**For C# (.NET Core):**
+```vim
+:MasonInstall netcoredbg
+```
+
+**Configuration:**
+- DAP configurations are in `lua/plugins/configs/nvim-dap.lua`
+- DAP UI configurations are in `lua/plugins/configs/nvim-dap-ui.lua`
+- The DAP UI automatically opens when debugging starts and closes when debugging ends
 
 ---
 
@@ -400,6 +495,21 @@ yanky.nvim
 | Keymap | Mode | Description |
 |--------|------|-------------|
 | `<leader>cf` | Normal/Visual | Format buffer with Conform |
+
+### DAP (Debugging)
+| Keymap | Mode | Description |
+|--------|------|-------------|
+| `<F5>` | Normal | Continue/Start debugging |
+| `<F6>` | Normal | Debug nearest test (Neotest) |
+| `<F8>` | Normal | Step out |
+| `<F9>` | Normal | Toggle breakpoint |
+| `<F10>` | Normal | Step over |
+| `<F11>` | Normal | Step into |
+| `<leader>dr` | Normal | Open debug REPL |
+| `<leader>dl` | Normal | Run last debug configuration |
+| `<leader>dt` | Normal | Debug nearest test |
+| `<leader>du` | Normal | Toggle DAP UI |
+| `<leader>de` | Normal/Visual | Evaluate expression under cursor/selection |
 
 ### Plugin Management
 | Command | Description |

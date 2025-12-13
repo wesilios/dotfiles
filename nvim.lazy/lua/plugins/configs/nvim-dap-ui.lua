@@ -14,3 +14,18 @@ end
 
 -- default configuration
 dapui.setup()
+
+-- Keymappings for DAP UI
+local map = vim.keymap.set
+
+map('n', '<leader>du', function()
+  dapui.toggle()
+end, { noremap = true, silent = true, desc = 'Toggle DAP UI' })
+
+map('n', '<leader>de', function()
+  dapui.eval()
+end, { noremap = true, silent = true, desc = 'DAP Eval expression' })
+
+map('v', '<leader>de', function()
+  dapui.eval()
+end, { noremap = true, silent = true, desc = 'DAP Eval selection' })

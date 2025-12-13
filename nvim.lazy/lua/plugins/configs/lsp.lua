@@ -27,3 +27,22 @@ vim.lsp.config['luals'] = {
     },
   },
 }
+
+-- Clangd LSP configuration for C/C++
+vim.lsp.config['clangd'] = {
+  cmd = { 'clangd' },
+
+  -- Filetypes to automatically attach to.
+  filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
+
+  -- Root directory markers for C/C++ projects
+  root_markers = { 'compile_commands.json', 'compile_flags.txt', '.git' },
+
+  -- Clangd-specific settings
+  settings = {
+    clangd = {
+      -- Enable all clangd features
+      fallbackFlags = {},
+    },
+  },
+}
