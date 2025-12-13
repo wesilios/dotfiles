@@ -44,20 +44,57 @@ dap.configurations.cs = {
 
 local map = vim.keymap.set
 
-local opts = { noremap = true, silent = true }
+-- DAP keymappings with descriptions for which-key
+map('n', '<F5>', '<Cmd>lua require\'dap\'.continue()<CR>', {
+  noremap = true,
+  silent = true,
+  desc = 'DAP: Continue/Start debugging',
+})
 
-map('n', '<F5>', '<Cmd>lua require\'dap\'.continue()<CR>', opts)
-map('n', '<F6>', '<Cmd>lua require(\'neotest\').run.run({strategy = \'dap\'})<CR>', opts)
-map('n', '<F9>', '<Cmd>lua require\'dap\'.toggle_breakpoint()<CR>', opts)
-map('n', '<F10>', '<Cmd>lua require\'dap\'.step_over()<CR>', opts)
-map('n', '<F11>', '<Cmd>lua require\'dap\'.step_into()<CR>', opts)
-map('n', '<F8>', '<Cmd>lua require\'dap\'.step_out()<CR>', opts)
--- map("n", "<F12>", "<Cmd>lua require'dap'.step_out()<CR>", opts)
-map('n', '<leader>dr', '<Cmd>lua require\'dap\'.repl.open()<CR>', opts)
-map('n', '<leader>dl', '<Cmd>lua require\'dap\'.run_last()<CR>', opts)
-map(
-  'n',
-  '<leader>dt',
-  '<Cmd>lua require(\'neotest\').run.run({strategy = \'dap\'})<CR>',
-  { noremap = true, silent = true, desc = 'debug nearest test' }
-)
+map('n', '<F6>', '<Cmd>lua require(\'neotest\').run.run({strategy = \'dap\'})<CR>', {
+  noremap = true,
+  silent = true,
+  desc = 'DAP: Debug nearest test (Neotest)',
+})
+
+map('n', '<F9>', '<Cmd>lua require\'dap\'.toggle_breakpoint()<CR>', {
+  noremap = true,
+  silent = true,
+  desc = 'DAP: Toggle breakpoint',
+})
+
+map('n', '<F10>', '<Cmd>lua require\'dap\'.step_over()<CR>', {
+  noremap = true,
+  silent = true,
+  desc = 'DAP: Step over',
+})
+
+map('n', '<F11>', '<Cmd>lua require\'dap\'.step_into()<CR>', {
+  noremap = true,
+  silent = true,
+  desc = 'DAP: Step into',
+})
+
+map('n', '<F8>', '<Cmd>lua require\'dap\'.step_out()<CR>', {
+  noremap = true,
+  silent = true,
+  desc = 'DAP: Step out',
+})
+
+map('n', '<leader>dr', '<Cmd>lua require\'dap\'.repl.open()<CR>', {
+  noremap = true,
+  silent = true,
+  desc = 'DAP: Open REPL',
+})
+
+map('n', '<leader>dl', '<Cmd>lua require\'dap\'.run_last()<CR>', {
+  noremap = true,
+  silent = true,
+  desc = 'DAP: Run last configuration',
+})
+
+map('n', '<leader>dt', '<Cmd>lua require(\'neotest\').run.run({strategy = \'dap\'})<CR>', {
+  noremap = true,
+  silent = true,
+  desc = 'DAP: Debug nearest test',
+})
