@@ -10,9 +10,32 @@ function M.options()
       typescript = { 'prettier' },
       json = { 'prettier' },
       tsx = { 'prettier' },
+      javascriptreact = { 'prettier' },
+      typescriptreact = { 'prettier' },
+      yaml = { 'prettier' },
+      markdown = { 'prettier' },
+      -- C# formatting is handled by Roslyn LSP
       -- go = { "gofmt" },
       -- python = { "black" },
+      -- c = { "clang-format" },
+      -- cpp = { "clang-format" },
     },
+
+    -- Formatter-specific settings
+    formatters = {
+      -- Prettier configuration (for JS, TS, CSS, HTML, etc.)
+      prettier = {
+        prepend_args = {
+          '--print-width', '120',
+          '--tab-width', '2',
+          '--use-tabs', 'false',
+          '--single-quote', 'true',
+          '--trailing-comma', 'es5',
+        },
+      },
+      -- stylua is configured via stylua.toml file
+    },
+
     format_on_save = {
       -- These options will be passed to conform.format()
       timeout_ms = 2500,

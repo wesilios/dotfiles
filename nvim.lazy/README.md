@@ -4,10 +4,23 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 
 - Clean UI
 - Fast navigation
-- Smart formatting
+- Smart formatting with configurable indentation
+- Code commenting (normal & visual mode)
 - Modern Lua plugin ecosystem
 - Easy color scheme switching
 - Minimal magic, maximum control
+
+## ✨ Key Features
+
+- **Configurable Indentation**: C# (4 spaces), JS/TS/Lua (2 spaces), customizable per language
+- **Column Width Control**: 120 character limit with visual guide
+- **Comment Toggle**: `gcc` (line), `gc` (visual selection), `gbc` (block)
+- **Auto-formatting**: Format on save with language-specific rules
+- **LSP Support**: C#, Lua, C/C++, and more
+- **Debugging**: DAP integration for C# and other languages
+
+📖 **See**: `INDENTATION_GUIDE.md` for indentation configuration
+📖 **See**: `SETUP_COMPLETE.md` for quick reference
 
 ---
 
@@ -25,6 +38,7 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
     |   `-- plugins
     |       |-- configs
     |       |   |-- colorscheme.lua
+    |       |   |-- comment.lua          ⭐ NEW: Comment toggle
     |       |   |-- conform.lua
     |       |   |-- harpoon.lua
     |       |   |-- lsp.lua
@@ -42,6 +56,11 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
     |       |   |-- which-key.lua
     |       |   `-- yanky.lua
     |       `-- init.lua
+    |-- .clang-format                    ⭐ NEW: C/C++ formatter config
+    |-- .editorconfig                    ⭐ NEW: EditorConfig for C#
+    |-- .prettierrc.json                 ⭐ NEW: Prettier config
+    |-- INDENTATION_GUIDE.md             ⭐ NEW: Configuration guide
+    |-- SETUP_COMPLETE.md                ⭐ NEW: Quick reference
     `-- stylua.toml
 ```
 
@@ -250,6 +269,43 @@ fd --version       # optional
 python3 --version  # optional
 node --version     # optional
 ```
+
+---
+
+## 🎯 Quick Start
+
+After installation, here are the essential commands:
+
+### Indentation & Formatting
+- **Format code**: `<leader>cf` (normal or visual mode)
+- **Auto-format**: Enabled on save
+- **Check indent**: `:set shiftwidth?`
+- **Modify settings**: Edit `lua/core/filetype-settings.lua`
+
+### Comment Code
+- **Toggle line comment**: `gcc` (normal mode)
+- **Toggle selection comment**: `gc` (visual mode)
+- **Block comment**: `gbc` (normal), `gb` (visual)
+- **Comment below/above**: `gco` / `gcO`
+
+### Navigation
+- **File explorer**: `<leader>pv`
+- **Find files**: `<leader>ff`
+- **Live grep**: `<leader>fg`
+- **Buffers**: `<leader>fb`
+
+### LSP
+- **Go to definition**: `gd`
+- **Hover docs**: `K`
+- **Code actions**: `<leader>ca`
+- **Rename**: `<leader>rn`
+
+### Git
+- **Git status**: `<leader>gs`
+- **Git blame**: `<leader>gb`
+- **Git diff**: `<leader>gd`
+
+📖 **Full documentation**: See sections below for detailed features
 
 ---
 

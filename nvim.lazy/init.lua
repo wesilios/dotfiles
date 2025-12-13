@@ -8,6 +8,7 @@ end
 require('core.autocmds')
 require('core.keymaps')
 require('core.options')
+require('core.filetype-settings').setup()
 
 -- Load plugins
 require('plugins')
