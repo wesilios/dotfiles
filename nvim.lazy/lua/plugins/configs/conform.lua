@@ -26,11 +26,18 @@ function M.options()
       -- Prettier configuration (for JS, TS, CSS, HTML, etc.)
       prettier = {
         prepend_args = {
-          '--print-width', '120',
-          '--tab-width', '2',
-          '--use-tabs', 'false',
-          '--single-quote', 'true',
-          '--trailing-comma', 'es5',
+          '--print-width',
+          '120',
+          '--tab-width',
+          '2',
+          '--use-tabs',
+          'false',
+          '--single-quote',
+          'true',
+          '--trailing-comma',
+          'es5',
+          '--prose-wrap',
+          'always',
         },
       },
       -- stylua is configured via stylua.toml file
