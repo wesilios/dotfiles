@@ -68,6 +68,17 @@ local function setup_lsp_keymaps(bufnr)
     vim.lsp.buf.workspace_symbol,
     vim.tbl_extend('force', opts, { desc = 'LSP: Workspace symbols' })
   )
+
+  -- Toggle inlay hints (if supported by LSP)
+  map('n', '<leader>th', function()
+    local current = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
+    vim.lsp.inlay_hint.enable(not current, { bufnr = bufnr })
+    if not current then
+      vim.notify('Inlay hints enabled', vim.log.levels.INFO)
+    else
+      vim.notify('Inlay hints disabled', vim.log.levels.INFO)
+    end
+  end, vim.tbl_extend('force', opts, { desc = 'LSP: Toggle inlay hints' }))
 end
 
 -- Roslyn LSP configuration for C#
@@ -170,9 +181,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Set up keymaps for all LSP clients
     setup_lsp_keymaps(bufnr)
 
-    -- Enable inlay hints if supported
+    -- Enable inlay hints if supported (except for roslyn - it has custom config)
     if client and client.server_capabilities.inlayHintProvider then
-      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+      -- Roslyn handles inlay hints in its own on_attach (disabled by default)
+      if client.name ~= 'roslyn' then
+        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+      end
     end
 
     -- Enable completion triggered by <c-x><c-o>

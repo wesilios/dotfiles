@@ -34,6 +34,38 @@ require('roslyn').setup({
         dotnet_show_name_completion_suggestions = true,
       },
     },
+    on_attach = function(client, bufnr)
+      -- Disable inlay hints by default
+      vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
+
+      -- Note: <leader>th keymap is set in lsp.lua for all LSP servers
+
+      -- Show inlay hints when cursor holds on a variable
+      local hint_augroup = vim.api.nvim_create_augroup('InlayHintOnHold', { clear = false })
+
+      -- Clear previous autocmds for this buffer
+      vim.api.nvim_clear_autocmds({ group = hint_augroup, buffer = bufnr })
+
+      -- Show hints on cursor hold (when you stop moving cursor)
+      vim.api.nvim_create_autocmd('CursorHold', {
+        group = hint_augroup,
+        buffer = bufnr,
+        callback = function()
+          -- Only show if hints are globally disabled
+          if not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }) then
+            -- Temporarily enable hints for current line context
+            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+
+            -- Disable after a short delay
+            vim.defer_fn(function()
+              if vim.api.nvim_buf_is_valid(bufnr) then
+                vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
+              end
+            end, 2000) -- Show for 2 seconds
+          end
+        end,
+      })
+    end,
   },
 })
 
