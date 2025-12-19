@@ -51,13 +51,23 @@ local function setup_lsp_keymaps(bufnr)
   map('n', ']d', vim.diagnostic.goto_next, vim.tbl_extend('force', opts, { desc = 'LSP: Next diagnostic' }))
 
   -- Show all diagnostics in location list
-  map('n', '<leader>dl', vim.diagnostic.setloclist, vim.tbl_extend('force', opts, { desc = 'LSP: Diagnostics to loclist' }))
+  map(
+    'n',
+    '<leader>dl',
+    vim.diagnostic.setloclist,
+    vim.tbl_extend('force', opts, { desc = 'LSP: Diagnostics to loclist' })
+  )
 
   -- Type definition
   map('n', '<leader>D', vim.lsp.buf.type_definition, vim.tbl_extend('force', opts, { desc = 'LSP: Type definition' }))
 
   -- Workspace symbols
-  map('n', '<leader>ws', vim.lsp.buf.workspace_symbol, vim.tbl_extend('force', opts, { desc = 'LSP: Workspace symbols' }))
+  map(
+    'n',
+    '<leader>ws',
+    vim.lsp.buf.workspace_symbol,
+    vim.tbl_extend('force', opts, { desc = 'LSP: Workspace symbols' })
+  )
 end
 
 -- Roslyn LSP configuration for C#

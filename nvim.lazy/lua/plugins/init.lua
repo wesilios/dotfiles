@@ -194,4 +194,13 @@ require('lazy').setup({
       require(configpath .. 'comment')
     end,
   },
+  {
+    'nvim-mini/mini.nvim',
+    version = false,
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },
+    opts = {},
+  },
 })
