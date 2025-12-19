@@ -38,16 +38,7 @@ require('roslyn').setup({
       -- Disable inlay hints by default
       vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
 
-      -- Keymap to toggle inlay hints
-      vim.keymap.set('n', '<leader>th', function()
-        local current = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
-        vim.lsp.inlay_hint.enable(not current, { bufnr = bufnr })
-        if not current then
-          vim.notify('Inlay hints enabled', vim.log.levels.INFO)
-        else
-          vim.notify('Inlay hints disabled', vim.log.levels.INFO)
-        end
-      end, { buffer = bufnr, desc = 'Toggle Inlay Hints' })
+      -- Note: <leader>th keymap is set in lsp.lua for all LSP servers
 
       -- Show inlay hints when cursor holds on a variable
       local hint_augroup = vim.api.nvim_create_augroup('InlayHintOnHold', { clear = false })
