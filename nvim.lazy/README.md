@@ -12,12 +12,18 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 
 ## ✨ Key Features
 
-- **Configurable Indentation**: C# (4 spaces), JS/TS/Lua (2 spaces), customizable per language
-- **Column Width Control**: 120 character limit with visual guide
-- **Comment Toggle**: `gcc` (line), `gc` (visual selection), `gbc` (block)
-- **Auto-formatting**: Format on save with language-specific rules
-- **LSP Support**: C#, Lua, C/C++, and more
+- **Fuzzy Finding**: Telescope for files, text search, buffers, and more
+- **Quick Navigation**: Harpoon for instant file switching
+- **Clipboard Management**: Yanky with yank history and smart paste
+- **Undo History**: Undotree for visual undo/redo navigation
+- **Git Integration**: vim-fugitive with Telescope integration
+- **Testing Framework**: Neotest with .NET support
+- **LSP Support**: C#, Lua, C/C++, and more with auto-completion
 - **Debugging**: DAP integration for C# and other languages
+- **Auto-formatting**: Format on save with language-specific rules (prettier, stylua, clang-format)
+- **Auto-pairs**: Automatic bracket, quote, and parenthesis closing with mini.pairs
+- **Surround**: Add/delete/replace surrounding brackets, quotes, tags with mini.surround
+- **Configurable Indentation**: C# (4 spaces), JS/TS/Lua (2 spaces), customizable per language
 
 📖 **See**: `INDENTATION_GUIDE.md` for indentation configuration
 📖 **See**: `SETUP_COMPLETE.md` for quick reference
@@ -38,16 +44,19 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
     |   `-- plugins
     |       |-- configs
     |       |   |-- colorscheme.lua
-    |       |   |-- comment.lua          ⭐ NEW: Comment toggle
+    |       |   |-- comment.lua
     |       |   |-- conform.lua
     |       |   |-- harpoon.lua
+    |       |   |-- indent-blankline.lua
     |       |   |-- lsp.lua
     |       |   |-- lualine.lua
     |       |   |-- mason.lua
+    |       |   |-- mini-nvim.lua
     |       |   |-- neotest.lua
     |       |   |-- nvim-cmp.lua
     |       |   |-- nvim-dap.lua
     |       |   |-- nvim-dap-ui.lua
+    |       |   |-- render-markdown.lua
     |       |   |-- roslyn.lua
     |       |   |-- telescope.lua
     |       |   |-- treesitter.lua
@@ -56,11 +65,11 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
     |       |   |-- which-key.lua
     |       |   `-- yanky.lua
     |       `-- init.lua
-    |-- .clang-format                    ⭐ NEW: C/C++ formatter config
-    |-- .editorconfig                    ⭐ NEW: EditorConfig for C#
-    |-- .prettierrc.json                 ⭐ NEW: Prettier config
-    |-- INDENTATION_GUIDE.md             ⭐ NEW: Configuration guide
-    |-- SETUP_COMPLETE.md                ⭐ NEW: Quick reference
+    |-- .clang-format
+    |-- .editorconfig
+    |-- .prettierrc.json
+    |-- INDENTATION_GUIDE.md
+    |-- SETUP_COMPLETE.md
     `-- stylua.toml
 ```
 
@@ -282,17 +291,28 @@ After installation, here are the essential commands:
 - **Check indent**: `:set shiftwidth?`
 - **Modify settings**: Edit `lua/core/filetype-settings.lua`
 
-### Comment Code
-- **Toggle line comment**: `gcc` (normal mode)
-- **Toggle selection comment**: `gc` (visual mode)
-- **Block comment**: `gbc` (normal), `gb` (visual)
-- **Comment below/above**: `gco` / `gcO`
-
 ### Navigation
-- **File explorer**: `<leader>pv`
+- **Harpoon add file**: `<leader>h`
+- **Harpoon menu**: `<leader>H`
+- **Cycle harpoon files**: `<C-S-P>` (previous)
+
+### Fuzzy Finding (Telescope)
 - **Find files**: `<leader>ff`
 - **Live grep**: `<leader>fg`
+- **Grep search**: `<leader>ps`
 - **Buffers**: `<leader>fb`
+- **Help tags**: `<leader>fh`
+
+### Clipboard (Yanky)
+- **Paste after**: `p`
+- **Paste before**: `P`
+- **Cycle yank history**: `]p` / `[p`
+- **Yank history picker**: `<leader>yh`
+
+### Surround
+- **Add surround**: Visual select → `sa"` (wrap with quotes)
+- **Delete surround**: `sd"` (remove quotes)
+- **Replace surround**: `sr"'` (change quotes to single quotes)
 
 ### LSP
 - **Go to definition**: `gd`
@@ -300,10 +320,21 @@ After installation, here are the essential commands:
 - **Code actions**: `<leader>ca`
 - **Rename**: `<leader>rn`
 
-### Git
+### Git (vim-fugitive)
 - **Git status**: `<leader>gs`
 - **Git blame**: `<leader>gb`
 - **Git diff**: `<leader>gd`
+- **Git commit**: `<leader>gc`
+- **Fugitive help**: `<leader>g?`
+
+### Testing (Neotest)
+- **Run nearest test**: `<leader>tn`
+- **Run file tests**: `<leader>tf`
+- **Toggle summary**: `<leader>ts`
+- **Toggle output**: `<leader>to`
+
+### Undo History
+- **Toggle undotree**: `<leader>u`
 
 📖 **Full documentation**: See sections below for detailed features
 
@@ -373,14 +404,18 @@ require(configpath .. 'colorscheme').switchtorosepine('moon')
 ## Plugins Included
 
 ```
+Comment.nvim
 conform.nvim
 gruvbox.nvim
 harpoon
+indent-blankline.nvim
 lazy.nvim
 lualine.nvim
 mason.nvim
+mini.nvim
 neotest
 neotest-dotnet
+nvim-cmp
 nvim-dap
 nvim-dap-ui
 nvim-lspconfig
@@ -390,6 +425,7 @@ nvim-web-devicons
 playground
 plenary.nvim
 ramboe-dotnet-utils
+render-markdown.nvim
 rose-pine
 roslyn.nvim
 telescope.nvim
@@ -399,6 +435,33 @@ vim-fugitive
 which-key.nvim
 yanky.nvim
 ```
+
+---
+
+## 📊 Statusline Features
+
+The enhanced lualine statusline displays:
+
+### Left Side
+- **Mode** - Current Vim mode (NORMAL, INSERT, VISUAL, etc.)
+- **Macro Recording** - Shows `󰑋 @{register}` when recording a macro
+- **Git Branch** - Current git branch with  icon
+- **Diff** - Git changes (additions, modifications, deletions)
+- **Diagnostics** - LSP diagnostics (errors, warnings, hints)
+
+### Center
+- **Filename** - Current file name with modification status
+- **LSP Progress** - Shows LSP server activity (e.g., "Indexing (45%)")
+
+### Right Side
+- **Active Formatters** - Shows which formatters are available (e.g., "󰷈 prettier, stylua")
+- **Encoding** - File encoding (utf-8, etc.)
+- **File Format** - Line ending format (unix, dos, mac)
+- **Filetype** - Current file type
+- **Progress** - Percentage through file
+- **Location** - Line and column number
+
+All components update automatically and show only when relevant information is available.
 
 ---
 
@@ -592,6 +655,44 @@ Install debug adapters via Mason:
 |--------|------|-------------|
 | `<leader>cf` | Normal/Visual | Format buffer with Conform |
 
+### Surround (mini.surround)
+| Keymap | Mode | Description | Example |
+|--------|------|-------------|---------|
+| `sa` | Normal/Visual | Add surrounding | `saiw"` - surround word with quotes |
+| `sd` | Normal | Delete surrounding | `sd"` - delete surrounding quotes |
+| `sr` | Normal | Replace surrounding | `sr"'` - replace quotes with single quotes |
+| `sf` | Normal | Find surrounding (right) | `sf)` - find next `)` |
+| `sF` | Normal | Find surrounding (left) | `sF(` - find previous `(` |
+| `sh` | Normal | Highlight surrounding | `sh"` - highlight surrounding quotes |
+
+**Common Surroundings:**
+- `(` `)` or `b` - Parentheses
+- `[` `]` - Square brackets
+- `{` `}` or `B` - Curly braces
+- `"` - Double quotes
+- `'` - Single quotes
+- `` ` `` - Backticks
+- `t` - HTML/XML tags
+
+**Examples:**
+- Visual select text → `sa"` → wraps with double quotes
+- `saiw(` → surround inner word with parentheses
+- `sd"` → delete surrounding double quotes
+- `sr"'` → replace double quotes with single quotes
+- `sr)'` → replace parentheses with single quotes
+
+### Markdown
+| Keymap | Mode | Description |
+|--------|------|-------------|
+| `<leader>mt` | Normal | Toggle markdown rendering |
+| `<leader>me` | Normal | Enable markdown rendering |
+| `<leader>md` | Normal | Disable markdown rendering |
+
+**Commands:**
+- `:RenderMarkdown toggle` - Toggle markdown rendering
+- `:RenderMarkdown enable` - Enable markdown rendering
+- `:RenderMarkdown disable` - Disable markdown rendering
+
 ### LSP (Language Server Protocol)
 | Keymap | Mode | Description |
 |--------|------|-------------|
@@ -610,6 +711,9 @@ Install debug adapters via Mason:
 | `<leader>dl` | Normal | Show all diagnostics in location list |
 | `<leader>D` | Normal | Go to type definition |
 | `<leader>ws` | Normal | Workspace symbols |
+| `<leader>th` | Normal | Toggle inlay hints (type hints) |
+
+**Note:** Inlay hints are disabled by default and will briefly appear when cursor holds on a variable.
 
 ### Completion (nvim-cmp)
 | Keymap | Mode | Description |
@@ -876,6 +980,28 @@ git status
 - Run `:Lazy profile` to see plugin load times
 - Disable unused plugins in `lua/plugins/init.lua`
 - Check `:checkhealth` for issues
+
+---
+
+## 🚀 Future Enhancements
+
+### 🔥 High Priority
+1. **gitsigns.nvim** - Git decorations in sign column (shows added/modified/deleted lines inline)
+2. **oil.nvim** or **nvim-tree.lua** - Modern file explorer (better than netrw)
+3. **telescope-fzf-native.nvim** - Faster Telescope searches (C-based fuzzy finding)
+
+### ⚡ Medium Priority
+4. **flash.nvim** or **leap.nvim** - Better motion/navigation (jump anywhere with 2-3 keys)
+5. **bufferline.nvim** - Visual buffer tabs (VSCode-like tabs at top)
+6. **auto-session** - Session management (restore workspace on startup)
+7. **project.nvim** - Project switching (quick project management)
+8. **aerial.nvim** - Symbol outline (code structure sidebar)
+
+### 🔵 Low Priority
+- **actions-preview.nvim** - Better code actions UI with preview
+- **markdown-preview.nvim** - Browser-based markdown preview
+- **coverage.nvim** - Test coverage visualization
+- **nvim-dap-virtual-text** - Inline variable values while debugging
 
 ---
 

@@ -197,10 +197,22 @@ require('lazy').setup({
   {
     'nvim-mini/mini.nvim',
     version = false,
+    config = function()
+      require(configpath .. 'mini-nvim')
+    end,
   },
   {
     'MeanderingProgrammer/render-markdown.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },
-    opts = {},
+    config = function()
+      require(configpath .. 'render-markdown').setup()
+    end,
+  },
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    main = 'ibl',
+    config = function()
+      require(configpath .. 'indent-blankline')
+    end,
   },
 })
