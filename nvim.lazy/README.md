@@ -837,6 +837,85 @@ Install debug adapters via Mason:
 
 ---
 
+## 📖 Help System
+
+This configuration includes a **self-documenting help system** that automatically scans your config files and provides interactive documentation.
+
+### Quick Access
+
+| Keymap | Description |
+|--------|-------------|
+| `<leader>?h` | Show help system usage |
+| `<leader>?k` | Show all keymaps (grouped by category) |
+| `<leader>?p` | Show all plugins (text) |
+| `<leader>?l` | Show all LSP servers (text) |
+| `<leader>?f` | Show all formatters (text) |
+| `<leader>?o` | Show all vim settings (text) |
+| `<leader>?s` | Show statistics |
+| `<leader>?r` | Force rescan config files |
+| `<leader>?g` | Generate vim help documentation (`:help nvim-config`) |
+
+### Telescope Integration (Interactive)
+
+| Keymap | Description |
+|--------|-------------|
+| `<leader>fhk` | Find keymaps (Telescope fuzzy search) |
+| `<leader>fhp` | Find plugins (Telescope fuzzy search) |
+| `<leader>fhl` | Find LSP servers (Telescope fuzzy search) |
+| `<leader>fhf` | Find formatters (Telescope fuzzy search) |
+| `<leader>fho` | Find vim settings (Telescope fuzzy search) |
+
+### Features
+
+- ✅ **Auto-scanning**: Automatically extracts keymaps, plugins, LSP servers, formatters, and vim settings from config files
+- ✅ **Persistent cache**: Scans once, caches results for fast loading
+- ✅ **Smart updates**: Only re-scans when config files are modified
+- ✅ **Lazy-loaded**: Zero startup impact
+- ✅ **Interactive search**: Telescope integration with fuzzy finding and previews
+- ✅ **Smart categorization**: Keymaps auto-grouped by functionality (Telescope, Git, LSP, Debug, etc.)
+- ✅ **Vim help docs**: Generate proper `:help nvim-config` documentation
+- ✅ **Self-documenting**: Help system documents itself
+
+### Programmatic API
+
+```lua
+local help = require('core.help-scanner')
+
+-- Load from cache (auto-scans if needed)
+help.load()
+
+-- Get data
+local keymaps = help.get_keymaps()
+local grouped = help.get_keymaps_grouped()  -- Grouped by category
+local plugins = help.get_plugins()
+local settings = help.get_settings()
+
+-- Search
+local telescope_keymaps = help.search_keymaps('telescope')
+
+-- Force rescan
+help.force_rescan()
+
+-- Generate vim help documentation
+require('core.help-doc-generator').generate()
+```
+
+### Vim Help Documentation
+
+Generate proper vim help documentation with:
+```vim
+<leader>?g
+```
+
+Then access it with:
+```vim
+:help nvim-config
+:help nvim-config-keymaps
+:help nvim-config-plugins
+```
+
+---
+
 ## 🚨 Troubleshooting
 
 ### Telescope Issues
