@@ -6,7 +6,7 @@
 -- Only re-scans when config files are modified.
 --
 -- Usage:
---   local help = require('core.help-scanner')
+--   local help = require('core.help-system')
 --   help.load()  -- Load from cache (auto-scans if needed)
 --   local keymaps = help.get_keymaps()
 --   help.force_rescan()  -- Force re-scan and update cache
@@ -722,8 +722,7 @@ end
 
 -- Generate help documentation
 function M.generate()
-  local help = require('core.help-scanner')
-  help.load()
+  M.load()
 
   local lines = {}
   local function add(line)
@@ -751,7 +750,7 @@ function M.generate()
   add('')
   add('The help system automatically scans your config files and generates this')
   add('documentation. To regenerate, run: >lua')
-  add('    require("core.help-doc-generator").generate()')
+  add('    require("core.help-system").generate()')
   add('<')
   add('')
   add('==============================================================================')
@@ -759,7 +758,7 @@ function M.generate()
   add('')
 
   -- Group keymaps by category
-  local grouped = help.get_keymaps_grouped()
+  local grouped = M.get_keymaps_grouped()
   local categories = {}
   for category, _ in pairs(grouped) do
     table.insert(categories, category)
@@ -786,7 +785,7 @@ function M.generate()
   add('PLUGINS                                                  *nvim-config-plugins*')
   add('')
 
-  local plugins = help.get_plugins()
+  local plugins = M.get_plugins()
   for _, plugin in ipairs(plugins) do
     add(string.format('    %-30s %s', plugin.name, plugin.full_name))
   end
@@ -798,7 +797,7 @@ function M.generate()
   add('LSP SERVERS                                                  *nvim-config-lsp*')
   add('')
 
-  local lsp_servers = help.get_lsp_servers()
+  local lsp_servers = M.get_lsp_servers()
   for _, lsp in ipairs(lsp_servers) do
     add(string.format('    %s', lsp.name))
   end
@@ -810,7 +809,7 @@ function M.generate()
   add('FORMATTERS                                            *nvim-config-formatters*')
   add('')
 
-  local formatters = help.get_formatters()
+  local formatters = M.get_formatters()
   local by_filetype = {}
   for _, fmt in ipairs(formatters) do
     if not by_filetype[fmt.filetype] then
@@ -830,7 +829,7 @@ function M.generate()
   add('SETTINGS                                              *nvim-config-settings*')
   add('')
 
-  local settings = help.get_settings()
+  local settings = M.get_settings()
   for _, setting in ipairs(settings) do
     if setting.description then
       add(string.format('    %-20s = %-15s -- %s', setting.name, setting.value, setting.description))
