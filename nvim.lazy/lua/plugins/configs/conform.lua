@@ -12,13 +12,18 @@ function M.options()
       tsx = { 'prettier' },
       javascriptreact = { 'prettier' },
       typescriptreact = { 'prettier' },
-      yaml = { 'prettier' },
+      yaml = { 'yamlfmt' },
+      yml = { 'yamlfmt' },
       markdown = { 'prettier' },
+      c = { 'clang-format' },
+      cpp = { 'clang-format' },
+      cmake = { 'cmake_format' },
+      dockerfile = { 'hadolint' },
+      -- dotenv files - use basic formatters
+      ['env'] = { 'trim_whitespace', 'trim_newlines' },
       -- C# formatting is handled by Roslyn LSP
       -- go = { "gofmt" },
       -- python = { "black" },
-      -- c = { "clang-format" },
-      -- cpp = { "clang-format" },
     },
 
     -- Formatter-specific settings
@@ -38,6 +43,35 @@ function M.options()
           'es5',
           '--prose-wrap',
           'always',
+        },
+      },
+      -- clang-format configuration (for C/C++)
+      ['clang-format'] = {
+        prepend_args = {
+          '--style={BasedOnStyle: LLVM, IndentWidth: 4, ColumnLimit: 120, UseTab: Never}',
+        },
+      },
+      -- cmake-format configuration (for CMake files)
+      cmake_format = {
+        prepend_args = {
+          '--line-width',
+          '120',
+          '--tab-size',
+          '4',
+        },
+      },
+      -- yamlfmt configuration (for YAML files)
+      yamlfmt = {
+        prepend_args = {
+          '-formatter',
+          'indent=2,max_line_length=120,retain_line_breaks=true',
+        },
+      },
+      -- hadolint configuration (for Dockerfile)
+      hadolint = {
+        prepend_args = {
+          '--format',
+          'json',
         },
       },
       -- stylua is configured via stylua.toml file
