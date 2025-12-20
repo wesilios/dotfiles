@@ -215,4 +215,17 @@ require('lazy').setup({
       require(configpath .. 'indent-blankline')
     end,
   },
+  -- Help System (lazy-loaded on keymap)
+  {
+    dir = vim.fn.stdpath('config') .. '/lua/core',
+    name = 'help-system',
+    lazy = true,
+    dependencies = { 'nvim-telescope/telescope.nvim' },
+    keys = function()
+      return require(configpath .. 'nvim-help').keys
+    end,
+    config = function()
+      require(configpath .. 'nvim-help').init()
+    end,
+  },
 })
