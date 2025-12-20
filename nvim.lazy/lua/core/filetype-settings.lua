@@ -57,6 +57,7 @@ M.indent_settings = {
       'cpp',
       'h',
       'hpp',
+      'cmake',
       'python',
       'java',
       'go',

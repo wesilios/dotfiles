@@ -171,6 +171,25 @@ vim.lsp.config['clangd'] = {
   },
 }
 
+-- CMake LSP configuration (using neocmakelsp - modern Rust-based LSP)
+vim.lsp.config['neocmake'] = {
+  cmd = { 'neocmakelsp' },
+  capabilities = capabilities,
+
+  -- Filetypes to automatically attach to.
+  filetypes = { 'cmake' },
+
+  -- Root directory markers for CMake projects
+  root_markers = { 'CMakeLists.txt', 'build', '.git' },
+
+  -- neocmakelsp-specific settings
+  settings = {
+    cmake = {
+      buildDirectory = 'build',
+    },
+  },
+}
+
 -- LspAttach autocmd to set up keymaps when LSP attaches to buffer
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', { clear = true }),
