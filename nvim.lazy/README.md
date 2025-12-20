@@ -96,13 +96,17 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 
 ### Optional but Recommended
 
-| Tool         | Purpose                  | Used By                   | Impact if Missing                       |
-| ------------ | ------------------------ | ------------------------- | --------------------------------------- |
-| **fd**       | Fast file finder         | Telescope find_files      | Falls back to slower find/rg            |
-| **stylua**   | Lua formatter            | conform.nvim              | Lua formatting won't work               |
-| **prettier** | JS/TS/CSS/HTML formatter | conform.nvim              | Web formatting won't work               |
-| **python3**  | Language support         | LSP servers, some plugins | Python development features unavailable |
-| **Node.js**  | JavaScript runtime       | LSP servers, prettier     | JS/TS development features limited      |
+| Tool            | Purpose                       | Used By       | Impact if Missing                       |
+| --------------- | ----------------------------- | ------------- | --------------------------------------- |
+| **fd**          | Fast file finder              | Telescope     | Falls back to slower find/rg            |
+| **stylua**      | Lua formatter                 | conform.nvim  | Lua formatting won't work               |
+| **prettier**    | JS/TS/CSS/HTML/MD formatter   | conform.nvim  | Web formatting won't work               |
+| **clang-format**| C/C++ formatter               | conform.nvim  | C/C++ formatting won't work             |
+| **cmake-format**| CMake formatter               | conform.nvim  | CMake formatting won't work (optional)  |
+| **yamlfmt**     | YAML formatter                | conform.nvim  | YAML formatting won't work (optional)   |
+| **hadolint**    | Dockerfile linter/formatter   | conform.nvim  | Dockerfile formatting won't work        |
+| **python3**     | Language support              | LSP, formatters| Python development features unavailable |
+| **Node.js**     | JavaScript runtime            | LSP, prettier | JS/TS development features limited      |
 
 ### Plugin Dependencies Summary
 
@@ -551,13 +555,25 @@ Then install the required language servers:
 **For C/C++:**
 
 ```vim
-:MasonInstall clangd
+:MasonInstall clangd clang-format
+```
+
+**For CMake:**
+
+```vim
+:MasonInstall neocmakelsp cmake-format
 ```
 
 **For C#:**
 
 ```vim
 :MasonInstall roslyn netcoredbg
+```
+
+**For Configuration Files (YAML, Dockerfile):**
+
+```vim
+:MasonInstall yamlfmt hadolint
 ```
 
 **Note:** The `roslyn` language server requires the custom Mason registry (`github:Crashdummyy/mason-registry`) which is

@@ -200,8 +200,20 @@ if ($selectedConfig -eq "lazy") {
 
     Write-Host "Optional but recommended tools:" -ForegroundColor Yellow
     Write-Host "  - fd: choco install fd (faster file finding)" -ForegroundColor White
-    Write-Host "  - stylua: choco install stylua (Lua formatter)" -ForegroundColor White
-    Write-Host "  - prettier: npm install -g prettier (JS/TS formatter)" -ForegroundColor White
+    Write-Host ""
+    Write-Host "Formatters (install via Mason :Mason):" -ForegroundColor Yellow
+    Write-Host "  - stylua: Lua formatter" -ForegroundColor White
+    Write-Host "  - prettier: JS/TS/CSS/HTML/Markdown formatter (npm install -g prettier)" -ForegroundColor White
+    Write-Host "  - clang-format: C/C++ formatter" -ForegroundColor White
+    Write-Host "  - cmake-format: CMake formatter (pip install cmakelang)" -ForegroundColor White
+    Write-Host "  - yamlfmt: YAML formatter" -ForegroundColor White
+    Write-Host "  - hadolint: Dockerfile linter/formatter" -ForegroundColor White
+    Write-Host ""
+    Write-Host "Language Servers (install via Mason :Mason):" -ForegroundColor Yellow
+    Write-Host "  - lua-language-server: Lua LSP" -ForegroundColor White
+    Write-Host "  - clangd: C/C++ LSP" -ForegroundColor White
+    Write-Host "  - neocmakelsp: CMake LSP" -ForegroundColor White
+    Write-Host "  - roslyn: C# LSP" -ForegroundColor White
 } else {
     Write-Host "Next steps:" -ForegroundColor Yellow
     Write-Host "  1. Run nvim"
