@@ -28,9 +28,9 @@ local M = {}
 function M.keymaps(opts)
   opts = opts or {}
 
-  local help = require('core.help-scanner')
-  help.load()
-  local keymaps = help.get_keymaps()
+  local help_system = require('core.help-system')
+  help_system.load()
+  local keymaps = help_system.get_keymaps()
 
   pickers
     .new(opts, {
@@ -80,9 +80,9 @@ end
 function M.plugins(opts)
   opts = opts or {}
 
-  local help = require('core.help-scanner')
-  help.load()
-  local plugins = help.get_plugins()
+  local help_system = require('core.help-system')
+  help_system.load()
+  local plugins = help_system.get_plugins()
 
   pickers
     .new(opts, {
@@ -131,9 +131,9 @@ end
 function M.lsp_servers(opts)
   opts = opts or {}
 
-  local help = require('core.help-scanner')
-  help.load()
-  local lsp_servers = help.get_lsp_servers()
+  local help_system = require('core.help-system')
+  help_system.load()
+  local lsp_servers = help_system.get_lsp_servers()
 
   pickers
     .new(opts, {
@@ -173,9 +173,9 @@ end
 function M.formatters(opts)
   opts = opts or {}
 
-  local help = require('core.help-scanner')
-  help.load()
-  local formatters = help.get_formatters()
+  local help_system = require('core.help-system')
+  help_system.load()
+  local formatters = help_system.get_formatters()
 
   pickers
     .new(opts, {
@@ -216,9 +216,9 @@ end
 function M.settings(opts)
   opts = opts or {}
 
-  local help = require('core.help-scanner')
-  help.load()
-  local settings = help.get_settings()
+  local help_system = require('core.help-system')
+  help_system.load()
+  local settings = help_system.get_settings()
 
   pickers
     .new(opts, {
