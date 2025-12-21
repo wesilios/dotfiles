@@ -96,17 +96,17 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 
 ### Optional but Recommended
 
-| Tool            | Purpose                       | Used By       | Impact if Missing                       |
-| --------------- | ----------------------------- | ------------- | --------------------------------------- |
-| **fd**          | Fast file finder              | Telescope     | Falls back to slower find/rg            |
-| **stylua**      | Lua formatter                 | conform.nvim  | Lua formatting won't work               |
-| **prettier**    | JS/TS/CSS/HTML/MD formatter   | conform.nvim  | Web formatting won't work               |
-| **clang-format**| C/C++ formatter               | conform.nvim  | C/C++ formatting won't work             |
-| **cmake-format**| CMake formatter               | conform.nvim  | CMake formatting won't work (optional)  |
-| **yamlfmt**     | YAML formatter                | conform.nvim  | YAML formatting won't work (optional)   |
-| **hadolint**    | Dockerfile linter/formatter   | conform.nvim  | Dockerfile formatting won't work        |
-| **python3**     | Language support              | LSP, formatters| Python development features unavailable |
-| **Node.js**     | JavaScript runtime            | LSP, prettier | JS/TS development features limited      |
+| Tool             | Purpose                     | Used By         | Impact if Missing                       |
+| ---------------- | --------------------------- | --------------- | --------------------------------------- |
+| **fd**           | Fast file finder            | Telescope       | Falls back to slower find/rg            |
+| **stylua**       | Lua formatter               | conform.nvim    | Lua formatting won't work               |
+| **prettier**     | JS/TS/CSS/HTML/MD formatter | conform.nvim    | Web formatting won't work               |
+| **clang-format** | C/C++ formatter             | conform.nvim    | C/C++ formatting won't work             |
+| **cmake-format** | CMake formatter             | conform.nvim    | CMake formatting won't work (optional)  |
+| **yamlfmt**      | YAML formatter              | conform.nvim    | YAML formatting won't work (optional)   |
+| **hadolint**     | Dockerfile linter/formatter | conform.nvim    | Dockerfile formatting won't work        |
+| **python3**      | Language support            | LSP, formatters | Python development features unavailable |
+| **Node.js**      | JavaScript runtime          | LSP, prettier   | JS/TS development features limited      |
 
 ### Plugin Dependencies Summary
 
@@ -839,35 +839,37 @@ Install debug adapters via Mason:
 
 ## 📖 Help System
 
-This configuration includes a **self-documenting help system** that automatically scans your config files and provides interactive documentation.
+This configuration includes a **self-documenting help system** that automatically scans your config files and provides
+interactive documentation.
 
 ### Quick Access
 
-| Keymap | Description |
-|--------|-------------|
-| `<leader>?h` | Show help system usage |
-| `<leader>?k` | Show all keymaps (grouped by category) |
-| `<leader>?p` | Show all plugins (text) |
-| `<leader>?l` | Show all LSP servers (text) |
-| `<leader>?f` | Show all formatters (text) |
-| `<leader>?o` | Show all vim settings (text) |
-| `<leader>?s` | Show statistics |
-| `<leader>?r` | Force rescan config files |
+| Keymap       | Description                                           |
+| ------------ | ----------------------------------------------------- |
+| `<leader>?h` | Show help system usage                                |
+| `<leader>?k` | Show all keymaps (grouped by category)                |
+| `<leader>?p` | Show all plugins (text)                               |
+| `<leader>?l` | Show all LSP servers (text)                           |
+| `<leader>?f` | Show all formatters (text)                            |
+| `<leader>?o` | Show all vim settings (text)                          |
+| `<leader>?s` | Show statistics                                       |
+| `<leader>?r` | Force rescan config files                             |
 | `<leader>?g` | Generate vim help documentation (`:help nvim-config`) |
 
 ### Telescope Integration (Interactive)
 
-| Keymap | Description |
-|--------|-------------|
-| `<leader>fhk` | Find keymaps (Telescope fuzzy search) |
-| `<leader>fhp` | Find plugins (Telescope fuzzy search) |
-| `<leader>fhl` | Find LSP servers (Telescope fuzzy search) |
-| `<leader>fhf` | Find formatters (Telescope fuzzy search) |
+| Keymap        | Description                                |
+| ------------- | ------------------------------------------ |
+| `<leader>fhk` | Find keymaps (Telescope fuzzy search)      |
+| `<leader>fhp` | Find plugins (Telescope fuzzy search)      |
+| `<leader>fhl` | Find LSP servers (Telescope fuzzy search)  |
+| `<leader>fhf` | Find formatters (Telescope fuzzy search)   |
 | `<leader>fho` | Find vim settings (Telescope fuzzy search) |
 
 ### Features
 
-- ✅ **Auto-scanning**: Automatically extracts keymaps, plugins, LSP servers, formatters, and vim settings from config files
+- ✅ **Auto-scanning**: Automatically extracts keymaps, plugins, LSP servers, formatters, and vim settings from config
+  files
 - ✅ **Persistent cache**: Scans once, caches results for fast loading
 - ✅ **Smart updates**: Only re-scans when config files are modified
 - ✅ **Lazy-loaded**: Zero startup impact
@@ -879,7 +881,7 @@ This configuration includes a **self-documenting help system** that automaticall
 ### Programmatic API
 
 ```lua
-local help = require('core.help-scanner')
+local help = require('core.help-system')
 
 -- Load from cache (auto-scans if needed)
 help.load()
@@ -903,11 +905,13 @@ require('core.help-doc-generator').generate()
 ### Vim Help Documentation
 
 Generate proper vim help documentation with:
+
 ```vim
 <leader>?g
 ```
 
 Then access it with:
+
 ```vim
 :help nvim-config
 :help nvim-config-keymaps

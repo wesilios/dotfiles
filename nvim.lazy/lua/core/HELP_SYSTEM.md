@@ -23,7 +23,7 @@ Auto-scans your Neovim config to document keymaps, plugins, LSP servers, formatt
 ## API
 
 ```lua
-local help = require('core.help-scanner')
+local help = require('core.help-system')
 
 -- Get data
 help.load()
@@ -49,7 +49,7 @@ help.clear_cache()
 
 ## Extending
 
-Add new scanners in `lua/core/help-scanner.lua`:
+Add new scanners in `lua/core/help-system.lua`:
 
 ```lua
 local function scan_all_autocmds()
@@ -70,6 +70,5 @@ end
 <leader>?s
 
 " Clear cache
-:lua require('core.help-scanner').clear_cache()
+:lua require('core.help-system').clear_cache()
 ```
-
