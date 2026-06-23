@@ -190,6 +190,41 @@ vim.lsp.config['neocmake'] = {
   },
 }
 
+-- Javascript/Typescript LSP configuration (using typescript-language-server)
+vim.lsp.config['ts_ls'] = {
+  cmd = { 'typescript-language-server', '--stdio' },
+
+  capabilities = capabilities,
+
+  filetypes = {
+    'javascript',
+    'javascriptreact',
+    'typescript',
+    'typescriptreact',
+  },
+
+  root_markers = {
+    'tsconfig.json',
+    'jsconfig.json',
+    'package.json',
+    '.git',
+  },
+
+  settings = {
+    javascript = {
+      updateImportsOnFileMove = {
+        enabled = 'always',
+      },
+    },
+
+    typescript = {
+      updateImportsOnFileMove = {
+        enabled = 'always',
+      },
+    },
+  },
+}
+
 -- LspAttach autocmd to set up keymaps when LSP attaches to buffer
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', { clear = true }),
