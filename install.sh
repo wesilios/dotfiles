@@ -277,6 +277,7 @@ if [ "$SELECTED_CONFIG" = "lazy" ]; then
     echo "  - clangd: C/C++ LSP"
     echo "  - neocmakelsp: CMake LSP"
     echo "  - roslyn: C# LSP"
+    echo "  - typescript-language-server: Javascript/Typescript LSP"
 else
     echo -e "${YELLOW}Next steps:${NC}"
     echo "  1. Run nvim"
@@ -285,7 +286,7 @@ else
     echo "  4. Install CoC extensions: :CocInstall coc-snippets coc-pairs"
     echo ""
     echo -e "${YELLOW}Optional language servers:${NC}"
-    echo "  - JavaScript/TypeScript: npm install -g typescript typescript-language-server"
+    echo "  - Javascript/Typescript: npm install -g typescript typescript-language-server"
     echo "  - Python: pip3 install python-lsp-server"
     echo "  - Rust: rustup component add rls rust-src rust-analysis"
 fi
