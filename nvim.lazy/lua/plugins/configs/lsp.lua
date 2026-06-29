@@ -160,7 +160,7 @@ vim.lsp.config['clangd'] = {
   filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
 
   -- Root directory markers for C/C++ projects
-  root_markers = { 'compile_commands.json', 'compile_flags.txt', '.git' },
+  root_markers = { 'compile_commands.json', 'compile_flags.txt', '.git', 'CMakeLists.txt' },
 
   -- Clangd-specific settings
   settings = {
@@ -226,6 +226,10 @@ vim.lsp.config['ts_ls'] = {
 }
 
 vim.lsp.enable('ts_ls')
+vim.lsp.enable('clangd')
+vim.lsp.enable('luals')
+vim.lsp.enable('roslyn')
+vim.lsp.enable('neocmake')
 
 -- LspAttach autocmd to set up keymaps when LSP attaches to buffer
 vim.api.nvim_create_autocmd('LspAttach', {
