@@ -59,7 +59,7 @@ jobs:
       - name: Test folder
         if: matrix.config == 'lazy'
         run: |
-          ls -al
+          ls -al neovim.config/nvim.lazy/
 
       - name: Copy lazy configuration
         if: matrix.config == 'lazy'
