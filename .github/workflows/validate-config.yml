@@ -59,7 +59,7 @@ jobs:
       - name: Copy lazy configuration
         if: matrix.config == 'lazy'
         run: |
-          cp -r config/nvim/* ~/.config/nvim/
+          cp -r neovim.config/nvim.lazy/* ~/.config/nvim/
 
       - name: Install lazy.nvim
         if: matrix.config == 'lazy'
