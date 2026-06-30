@@ -35,7 +35,7 @@ jobs:
       - name: Copy plug configuration
         if: matrix.config == 'plug'
         run: |
-          cp -r nvim.plug/* ~/.config/nvim/
+          cp -r neovim.config/nvim.plug/* ~/.config/nvim/
 
       - name: Install vim-plug
         if: matrix.config == 'plug'
@@ -59,7 +59,7 @@ jobs:
       - name: Copy lazy configuration
         if: matrix.config == 'lazy'
         run: |
-          cp -r nvim.lazy/* ~/.config/nvim/
+          cp -r neovim.config/nvim.lazy/* ~/.config/nvim/
 
       - name: Install lazy.nvim
         if: matrix.config == 'lazy'
