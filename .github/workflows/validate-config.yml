@@ -56,6 +56,11 @@ jobs:
       # ===============================
       # LAZY VERSION VALIDATION
       # ===============================
+      - name: Test folder
+        if: matrix.config == 'lazy'
+        run: |
+          ls -al
+
       - name: Copy lazy configuration
         if: matrix.config == 'lazy'
         run: |
