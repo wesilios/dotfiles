@@ -225,11 +225,131 @@ vim.lsp.config['ts_ls'] = {
   },
 }
 
-vim.lsp.enable('ts_ls')
-vim.lsp.enable('clangd')
-vim.lsp.enable('luals')
-vim.lsp.enable('roslyn')
-vim.lsp.enable('neocmake')
+-- YAML
+vim.lsp.config['yamlls'] = {
+  cmd = { 'yaml-language-server', '--stdio' },
+
+  capabilities = capabilities,
+  filetypes = {
+    'yaml',
+    'yaml.docker-composer',
+  },
+
+  root_markers = {
+    '.git',
+  },
+
+  settings = {
+    yaml = {
+      validate = true,
+      format = {
+        enable = true,
+      },
+    },
+  },
+}
+
+-- TOML
+vim.lsp.config['taplo'] = {
+  cmd = { 'taplo', 'lsp', 'stdio' },
+
+  capabilities = capabilities,
+
+  filetypes = {
+    'toml',
+  },
+
+  root_markers = {
+    '.git',
+    'Cargo.toml',
+  },
+}
+
+-- .env
+vim.lsp.config['dotenv_ls'] = {
+  cmd = { 'dotenv-linter', 'lsp' },
+
+  capabilities = capabilities,
+
+  filetypes = {
+    'dotenv',
+  },
+
+  root_markers = {
+    '.git',
+  },
+}
+
+-- Bash + Zsh
+vim.lsp.config['bashls'] = {
+  cmd = {
+    'bash-language-server',
+    'start',
+  },
+
+  capabilities = capabilities,
+
+  filetypes = {
+    'sh',
+    'bash',
+    'zsh',
+  },
+
+  root_markers = {
+    '.git',
+  },
+}
+
+-- Python LSP
+vim.lsp.config['pyright'] = {
+  cmd = { 'pyright-langserver', '--stdio' },
+
+  capabilities = capabilities,
+
+  filetypes = {
+    'python',
+  },
+
+  root_markers = {
+    'pyproject.toml',
+    'setup.py',
+    'setup.cfg',
+    'requirements.txt',
+    '.git',
+  },
+
+  settings = {
+    python = {
+      analysis = {
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true,
+        typeCheckingMode = 'basic',
+      },
+    },
+  },
+}
+
+for _, server in ipairs({
+  'ts_ls',
+  'clangd',
+  'lua_ls',
+  'roslyn',
+  'neocmake',
+  'yamlls',
+  'taplo',
+  'dotenv_ls',
+  'bashls',
+  'pyright',
+}) do
+  vim.lsp.enable(server)
+end
+
+vim.filetype.add({
+  pattern = {
+    ['%.env.*'] = 'dotenv',
+    ['%.env'] = 'dotenv',
+  },
+})
 
 -- LspAttach autocmd to set up keymaps when LSP attaches to buffer
 vim.api.nvim_create_autocmd('LspAttach', {

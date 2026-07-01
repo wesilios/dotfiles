@@ -248,9 +248,14 @@ if $INSTALL_NVIM; then
         fi
         echo -e "${GREEN}  [ok] config/nvim populated${NC}"
     else
-        echo -e "${GREEN}  [ok] config/nvim already exists — skipping copy${NC}"
+        # echo -e "${GREEN}  [ok] config/nvim already exists — skipping copy${NC}"
+	echo -e "${YELLOW}  Copying config/nvim from neovim.config...${NC}"
+	rm -rf "$DOTFILES_DIR/config/nvim"
+    	if [ -d "$DOTFILES_DIR/neovim.config/nvim.lazy" ]; then
+            echo -e "${YELLOW}  Copying nvim.lazy from neovim.config...${NC}"
+            cp -r "$DOTFILES_DIR/neovim.config/nvim.lazy" "$DOTFILES_DIR/config/nvim"
+	fi
     fi
-
     echo ""
     echo -e "  Linking:"
     link "$DOTFILES_DIR/config/nvim" "$HOME/.config/nvim"
@@ -278,20 +283,54 @@ echo -e "${CYAN}${BOLD}═══════════════════
 echo ""
 
 echo -e "  Symlinks created:"
-$INSTALL_ZSH  && echo -e "  ${CYAN}~/.zshrc${NC}                  → ${DOTFILES_DIR}/.zshrc"
-$INSTALL_ZSH  && echo -e "  ${CYAN}~/.p10k.zsh${NC}               → ${DOTFILES_DIR}/.p10k.zsh"
+
+$INSTALL_ZSH && echo -e "  ${CYAN}~/.zshrc${NC}                  → ${DOTFILES_DIR}/.zshrc"
+
+if $INSTALL_ZSH && [ "$PROMPT_THEME" = "p10k" ]; then
+    echo -e "  ${CYAN}~/.p10k.zsh${NC}               → ${DOTFILES_DIR}/.p10k.zsh"
+fi
+
+if $INSTALL_ZSH && [ "$PROMPT_THEME" = "omp" ]; then
+    echo -e "  ${CYAN}~/.config/oh-my-posh/theme.toml${NC} → ${DOTFILES_DIR}/config/oh-my-posh/theme.toml"
+fi
+
 $INSTALL_TMUX && echo -e "  ${CYAN}~/.config/tmux/tmux.conf${NC}  → ${DOTFILES_DIR}/config/tmux/tmux.conf"
 $INSTALL_NVIM && echo -e "  ${CYAN}~/.config/nvim${NC}            → ${DOTFILES_DIR}/config/nvim"
+
 echo ""
 
+
 if $INSTALL_ZSH; then
-    echo -e "  Zsh:    open a new shell — zinit + plugins auto-install on first start"
-    echo -e "          run ${CYAN}p10k configure${NC} to reconfigure the prompt"
-    echo -e "          see ${CYAN}https://github.com/romkatv/powerlevel10k#zinit${NC} for docs"
+
+    if [ "$PROMPT_THEME" = "p10k" ]; then
+        echo -e "  Zsh:"
+        echo -e "    Prompt: ${CYAN}Powerlevel10k${NC}"
+        echo -e "    Run ${CYAN}p10k configure${NC} to customize the prompt"
+        echo -e "    Docs: ${CYAN}https://github.com/romkatv/powerlevel10k${NC}"
+
+    elif [ "$PROMPT_THEME" = "omp" ]; then
+        echo -e "  Zsh:"
+        echo -e "    Prompt: ${CYAN}Oh My Posh${NC}"
+        echo -e "    Edit theme: ${CYAN}~/.config/oh-my-posh/theme.toml${NC}"
+        echo -e "    Docs: ${CYAN}https://ohmyposh.dev/${NC}"
+    fi
+
 fi
-$INSTALL_TMUX && echo -e "  Tmux:   start tmux, press ${CYAN}prefix+I${NC} to install plugins"
-$INSTALL_NVIM && echo -e "  Neovim: run ${CYAN}nvim${NC} — plugins auto-install on first launch"
-$INSTALL_NVIM && echo -e "          run ${CYAN}<leader>?g${NC} inside nvim to generate custom :help doc"
-$INSTALL_NVIM && echo -e "          run ${CYAN}:helptags ALL${NC} inside nvim to rebuild all plugin help tags"
-$INSTALL_NVIM && echo -e "  Source: config/nvim is copied from ${CYAN}neovim.config/nvim.lazy${NC} (not tracked in git)"
+
+
+$INSTALL_TMUX && echo -e "  Tmux:"
+$INSTALL_TMUX && echo -e "    Start tmux, press ${CYAN}prefix+I${NC} to install plugins"
+
+
+if $INSTALL_NVIM; then
+    echo -e "  Neovim:"
+    echo -e "    Run ${CYAN}nvim${NC} — plugins auto-install on first launch"
+    echo -e "    Install LSP servers with ${CYAN}:Mason${NC}"
+    echo -e "    Example: ${CYAN}:MasonInstall lua-language-server typescript-language-server clangd${NC}"
+    echo -e "    Check LSP status: ${CYAN}:LspInfo${NC}"
+    echo -e "    Generate help doc: ${CYAN}<leader>?g${NC}"
+    echo -e "    Rebuild help tags: ${CYAN}:helptags ALL${NC}"
+    echo -e "    Source: config/nvim is copied from ${CYAN}neovim.config/nvim.lazy${NC} (not tracked in git)"
+fi
+
 echo ""
