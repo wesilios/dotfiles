@@ -6,12 +6,13 @@ My personal dotfiles for Linux and macOS — Neovim, Zsh, and Tmux.
 
 After running `install.sh`, the following symlinks are created:
 
-| Symlink | → Dotfiles source |
-|---------|-------------------|
-| `~/.zshrc` | `~/dotfiles/.zshrc` |
-| `~/.p10k.zsh` | `~/dotfiles/.p10k.zsh` |
-| `~/.config/nvim` | `~/dotfiles/config/nvim` |
-| `~/.config/tmux/tmux.conf` | `~/dotfiles/config/tmux/tmux.conf` |
+| Symlink                           | → Dotfiles source                         |
+| --------------------------------- | ----------------------------------------- |
+| `~/.zshrc`                        | `~/dotfiles/.zshrc`                       |
+| `~/.p10k.zsh`                     | `~/dotfiles/.p10k.zsh`                    |
+| `~/.config/oh-my-posh/theme.toml` | `~/dotfiles/config/oh-my-posh/theme.toml` |
+| `~/.config/nvim`                  | `~/dotfiles/config/nvim`                  |
+| `~/.config/tmux/tmux.conf`        | `~/dotfiles/config/tmux/tmux.conf`        |
 
 ## Quick install
 
@@ -25,11 +26,11 @@ The script prompts which components to install, backs up any existing configs, t
 
 ## What's included
 
-| Tool | Source | Description |
-|------|--------|-------------|
-| **Neovim** | [`config/nvim/`](./config/nvim/) | lazy.nvim Lua config with LSP, Treesitter, Telescope |
-| **Zsh** | [`.zshrc`](./.zshrc) · [`.p10k.zsh`](./.p10k.zsh) | zinit · Powerlevel10k · autosuggestions · syntax-highlighting |
-| **Tmux** | [`config/tmux/tmux.conf`](./config/tmux/tmux.conf) | Vim-style pane navigation, TPM plugins |
+| Tool       | Source                                                                                           | Description                                                              |
+| ---------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| **Neovim** | [`config/nvim/`](./config/nvim/)                                                                 | lazy.nvim Lua config with LSP, Treesitter, Telescope                     |
+| **Zsh**    | [`.zshrc`](./.zshrc) · [`.p10k.zsh`](./.p10k.zsh) · [`omp.toml`](./config/oh-my-posh/theme.toml) | zinit · Powerlevel10k · OhMyPosh · autosuggestions · syntax-highlighting |
+| **Tmux**   | [`config/tmux/tmux.conf`](./config/tmux/tmux.conf)                                               | Vim-style pane navigation, TPM plugins                                   |
 
 ## Repository layout
 
@@ -43,6 +44,8 @@ dotfiles/
 │   │   └── lua/
 │   │       ├── core/
 │   │       └── plugins/
+│   ├── oh-my-posh/                     # ~/.config/oh-my-posh
+│   │   ├── theme.toml
 │   └── tmux/
 │       └── tmux.conf             # ~/.config/tmux/tmux.conf
 ├── neovim.config/                # legacy: nvim.plug, Docker test containers
@@ -52,14 +55,14 @@ dotfiles/
 
 ## Requirements
 
-| Tool | Version | Install |
-|------|---------|---------|
-| Neovim | 0.11.5+ | `apt/brew install neovim` |
-| Git | any | `apt/brew install git` |
-| Zsh | 5.0+ | `apt/brew install zsh` |
-| Tmux | 3.1+ | `apt/brew install tmux` |
-| Ripgrep | any | `apt/brew install ripgrep` |
-| Nerd Font | any | [nerdfonts.com](https://www.nerdfonts.com/) |
+| Tool      | Version | Install                                     |
+| --------- | ------- | ------------------------------------------- |
+| Neovim    | 0.11.5+ | `apt/brew install neovim`                   |
+| Git       | any     | `apt/brew install git`                      |
+| Zsh       | 5.0+    | `apt/brew install zsh`                      |
+| Tmux      | 3.1+    | `apt/brew install tmux`                     |
+| Ripgrep   | any     | `apt/brew install ripgrep`                  |
+| Nerd Font | any     | [nerdfonts.com](https://www.nerdfonts.com/) |
 
 ## Neovim LSP servers
 

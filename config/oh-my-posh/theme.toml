@@ -1,0 +1,79 @@
+version = 4
+
+[upgrade]
+  source = 'cdn'
+  interval = '168h'
+  auto = false
+  notice = false
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+
+  [[blocks.segments]]
+    template = '<{{ if .Root }}lightBlue{{ else }}green{{ end }}>┌──(</>{{ .UserName }}{{ if .Root }}💀{{ else }}㉿{{ end }}{{ .HostName }}<{{ if .Root }}lightBlue{{ else }}green{{ end }}>)</>'
+    foreground = 'lightBlue'
+    type = 'session'
+    style = 'plain'
+    foreground_templates = ['{{ if .Root }}lightRed{{ end }}']
+
+  [[blocks.segments]]
+    template = '<{{ if .Root }}lightBlue{{ else }}green{{ end }}>-[</> {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }}{{ end }}{{ .Full }}{{ end }}<{{ if .Root }}lightBlue{{ else }}green{{ end }}>]</>'
+    foreground = 'yellow'
+    type = 'python'
+    style = 'plain'
+
+    [blocks.segments.options]
+      fetch_version = false
+      fetch_virtual_env = true
+
+  [[blocks.segments]]
+    template = '<{{ if .Root }}lightBlue{{ else }}green{{ end }}>-[</>{{ .Path }}<{{ if .Root }}lightBlue{{ else }}green{{ end }}>]</>'
+    foreground = 'lightWhite'
+    type = 'path'
+    style = 'plain'
+
+    [blocks.segments.options]
+      folder_separator_icon = '<#c0c0c0>/</>'
+      style = 'full'
+
+  [[blocks.segments]]
+    template = '<{{ if .Root }}lightBlue{{ else }}green{{ end }}>-[</>{{ .HEAD }}<{{ if .Root }}lightBlue{{ else }}green{{ end }}>]</>'
+    foreground = 'white'
+    type = 'git'
+    style = 'plain'
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'right'
+
+  [[blocks.segments]]
+    template = ' {{ .FormattedMs }} '
+    foreground = 'white'
+    type = 'executiontime'
+    style = 'plain'
+
+    [blocks.segments.options]
+      always_enabled = true
+      style = 'round'
+
+  [[blocks.segments]]
+    template = ' {{ if gt .Code 0 }}{{else}}{{ end }} '
+    foreground = 'green'
+    type = 'status'
+    style = 'plain'
+    foreground_templates = ['{{ if gt .Code 0 }}red{{ end }}']
+
+    [blocks.segments.options]
+      always_enabled = true
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  [[blocks.segments]]
+    template = '<{{ if .Root }}lightBlue{{ else }}green{{ end }}>└─</>{{ if .Root }}<lightRed>#</>{{ else }}${{ end }} '
+    foreground = 'lightBlue'
+    type = 'text'
+    style = 'plain'

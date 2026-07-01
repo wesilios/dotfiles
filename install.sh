@@ -66,6 +66,13 @@ link() {
 echo -e "${BOLD}Which components do you want to install?${NC}"
 echo ""
 
+
+INSTALL_ZSH=false
+INSTALL_TMUX=false
+INSTALL_NVIM=false
+
+PROMPT_THEME=""
+
 ask_yn() {
     local answer
     read -r -p "$(echo -e "${CYAN}  $1${NC} [Y/n]: ")" answer
@@ -73,11 +80,37 @@ ask_yn() {
     [[ "$answer" =~ ^[Yy]$ ]]
 }
 
-INSTALL_ZSH=false
-INSTALL_TMUX=false
-INSTALL_NVIM=false
+choose_prompt_theme() {
+    echo ""
+    echo -e "${BOLD}Choose your Zsh prompt theme:${NC}"
+    echo ""
+    echo -e " ${CYAN}1)${NC} Powerlevel10k"
+    echo -e " ${CYAN}2)${NC} Oh My Posh"
+    echo ""
 
-ask_yn "Zsh   (.zshrc + .p10k.zsh + zinit)"  && INSTALL_ZSH=true
+    while true; do
+        read -r -p "$(echo -e "${CYAN}Select [1/2]: ${NC}")" choice
+
+        case "$choice" in
+            1)
+                PROMPT_THEME="p10k"
+                break
+                ;;
+            2)
+                PROMPT_THEME="omp"
+                break
+                ;;
+            *)
+                echo "Please choose 1 or 2"
+                ;;
+        esac
+    done
+}
+
+if ask_yn "Zsh"; then
+    INSTALL_ZSH=true
+    choose_prompt_theme
+fi
 ask_yn "Tmux  (.config/tmux/tmux.conf + TPM)" && INSTALL_TMUX=true
 ask_yn "Neovim (.config/nvim + lazy.nvim)"    && INSTALL_NVIM=true
 
@@ -132,15 +165,29 @@ if $INSTALL_ZSH; then
     echo ""
 
     echo -e "  Linking:"
-    link "$DOTFILES_DIR/.zshrc"    "$HOME/.zshrc"
-    link "$DOTFILES_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
-    echo ""
+    link "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
 
-    echo -e "  ${CYAN}Powerlevel10k notes:${NC}"
-    echo -e "  • To reconfigure the prompt, run: ${CYAN}p10k configure${NC}"
-    echo -e "  • Official docs: ${CYAN}https://github.com/romkatv/powerlevel10k#zinit${NC}"
-    echo ""
-fi
+    if [ "$PROMPT_THEME" = "p10k" ]; then
+        echo -e "  ${CYAN}Using Powerlevel10k${NC}"
+
+        link \
+            "$DOTFILES_DIR/.p10k.zsh" \
+            "$HOME/.p10k.zsh"
+
+    elif [ "$PROMPT_THEME" = "omp" ]; then
+        echo -e "  ${CYAN}Using Oh My Posh${NC}"
+
+        link \
+            "$DOTFILES_DIR/config/oh-my-posh/theme.yaml" \
+            "$HOME/.config/oh-my-posh/theme.yaml"
+    fi
+        echo ""
+
+        echo -e "  ${CYAN}Powerlevel10k notes:${NC}"
+        echo -e "  • To reconfigure the prompt, run: ${CYAN}p10k configure${NC}"
+        echo -e "  • Official docs: ${CYAN}https://github.com/romkatv/powerlevel10k#zinit${NC}"
+        echo ""
+    fi
 
 # ─── Tmux ────────────────────────────────────────────────────────────────────
 
