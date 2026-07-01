@@ -2,3 +2,6 @@
 /bundle
 /.idea
 /config/nvim/
+doc/tags
+.spec
+.luarc.json

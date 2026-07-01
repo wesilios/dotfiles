@@ -570,10 +570,22 @@ Then install the required language servers:
 :MasonInstall roslyn netcoredbg
 ```
 
-**For Configuration Files (YAML, Dockerfile):**
+**For Configuration Files (YAML, TOML, .env, Dockerfile):**
 
 ```vim
-:MasonInstall yamlfmt hadolint
+:MasonInstall yamlfmt hadolint taplo dotenv_ls
+```
+
+**For shell script (bash/zsh):**
+
+```vim
+:MasonInstall bashls
+```
+
+**For Python:**
+
+```vim
+:MasonInstall pyright
 ```
 
 **Note:** The `roslyn` language server requires the custom Mason registry (`github:Crashdummyy/mason-registry`) which is
