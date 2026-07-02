@@ -5,8 +5,8 @@ My personal Neovim configurations with support for multiple plugin managers.
 ## Available Configurations
 
 | Configuration                | Plugin Manager                                   | Status        | Description                                      |
-|------------------------------|--------------------------------------------------|---------------|--------------------------------------------------|
-| **[nvim.lazy](./nvim.lazy)** | [lazy.nvim](https://github.com/folke/lazy.nvim)  | ✅ Active      | Modern Lua-based configuration with lazy loading |
+| ---------------------------- | ------------------------------------------------ | ------------- | ------------------------------------------------ |
+| **[nvim.lazy](./nvim.lazy)** | [lazy.nvim](https://github.com/folke/lazy.nvim)  | ✅ Active     | Modern Lua-based configuration with lazy loading |
 | **[nvim.plug](./nvim.plug)** | [vim-plug](https://github.com/junegunn/vim-plug) | ⚠️ Deprecated | Legacy VimScript configuration                   |
 
 ## 📁 Directory Structure
@@ -71,17 +71,21 @@ See [nvim.lazy/README.md](./nvim.lazy/README.md) for detailed setup instructions
 ## 📋 Requirements
 
 ### nvim.lazy (Recommended)
+
 See [nvim.lazy/README.md](./nvim.lazy/README.md#-requirements) for complete requirements and dependencies.
 
 **Quick summary:**
-- Neovim 0.11.5+, Git, Nerd Font
+
+- Neovim 0.11.7+, Git, Nerd Font
 - **Ripgrep** (required for live grep)
 - **Luarocks** (required for plugin management)
 - C compiler (for Treesitter)
 - Optional: fd, stylua, prettier, python3, nodejs
 
 ### nvim.plug (Deprecated)
+
 ⚠️ **DEPRECATED** - Use nvim.lazy instead
+
 - Neovim 0.5+, Git, **Node.js & npm** (required for CoC)
 - fzf, Python 3
 - Build tools (platform-specific)
@@ -91,6 +95,7 @@ See [nvim.lazy/README.md](./nvim.lazy/README.md#-requirements) for complete requ
 ## 💾 Installation by Platform
 
 ### 🪟 Windows
+
 ```powershell
 # Via Chocolatey (recommended)
 choco install neovim git ripgrep mingw lua luarocks -y
@@ -104,6 +109,7 @@ winget install Neovim.Neovim Git.Git BurntSushi.ripgrep.MSVC
 ```
 
 ### 🐧 Linux
+
 ```bash
 # Debian/Ubuntu
 sudo apt install neovim git ripgrep build-essential luarocks
@@ -116,12 +122,14 @@ sudo dnf install neovim git ripgrep gcc make luarocks
 ```
 
 ### 🍎 macOS
+
 ```bash
 brew install neovim git ripgrep luarocks
 xcode-select --install  # For C compiler
 ```
 
-📋 **For detailed installation instructions, optional tools, and troubleshooting, see [nvim.lazy/README.md](./nvim.lazy/README.md#-installation-guide)**
+📋 **For detailed installation instructions, optional tools, and troubleshooting, see
+[nvim.lazy/README.md](./nvim.lazy/README.md#-installation-guide)**
 
 ---
 
@@ -137,6 +145,7 @@ xcode-select --install  # For C compiler
 Try Neovim in isolated Docker environments without affecting your system.
 
 **Two options available:**
+
 - **Minimal (Alpine):** ~200-300MB, bare essentials, install tools as needed
 - **Full (Arch):** ~2.8GB, everything pre-installed, ready to use
 

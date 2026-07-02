@@ -108,6 +108,7 @@ local function get_tracked_files()
     config_root .. '/lua/plugins/configs/conform.lua',
     config_root .. '/lua/plugins/configs/telescope.lua',
     config_root .. '/lua/plugins/configs/vim-fugitive.lua',
+    config_root .. '/lua/plugins/configs/gitsigns.lua',
     config_root .. '/lua/plugins/configs/harpoon.lua',
     config_root .. '/lua/plugins/configs/yanky.lua',
     config_root .. '/lua/plugins/configs/undotree.lua',

@@ -61,6 +61,7 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
     |       |   |-- treesitter.lua
     |       |   |-- undotree.lua
     |       |   |-- vim-fugitive.lua
+    |       |   |-- gitsigns.lua
     |       |   |-- which-key.lua
     |       |   `-- yanky.lua
     |       `-- init.lua
@@ -79,14 +80,14 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 
 #### Required (Minimum Setup)
 
-| Tool               | Purpose             | Why Required                     |
-| ------------------ | ------------------- | -------------------------------- |
-| **Neovim 0.11.5+** | Editor              | Core requirement                 |
-| **Git**            | Version control     | Plugin manager, vim-fugitive     |
-| **Nerd Font**      | Icons               | nvim-web-devicons, lualine       |
-| **Ripgrep (rg)**   | Text search         | Telescope live_grep, grep_string |
-| **C Compiler**     | Build parsers       | nvim-treesitter compilation      |
-| **Luarocks**       | Lua package manager | lazy.nvim plugin management      |
+| Tool               | Purpose             | Why Required                           |
+| ------------------ | ------------------- | -------------------------------------- |
+| **Neovim 0.11.7+** | Editor              | Core requirement                       |
+| **Git**            | Version control     | Plugin manager, vim-fugitive, gitsigns |
+| **Nerd Font**      | Icons               | nvim-web-devicons, lualine             |
+| **Ripgrep (rg)**   | Text search         | Telescope live_grep, grep_string       |
+| **C Compiler**     | Build parsers       | nvim-treesitter compilation            |
+| **Luarocks**       | Lua package manager | lazy.nvim plugin management            |
 
 #### C Compiler by Platform
 
@@ -118,6 +119,7 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 | lualine.nvim      | Nerd Font (required)                  | Icons won't display correctly |
 | nvim-web-devicons | Nerd Font (required)                  | Icons won't display correctly |
 | vim-fugitive      | Git (required)                        | Git integration               |
+| gitsigns          | Git (required)                        | Git integration               |
 | mason.nvim        | None                                  | LSP/DAP package manager       |
 | nvim-lspconfig    | Language servers via Mason            | Install via `:MasonInstall`   |
 | nvim-cmp          | None                                  | Completion engine             |
@@ -341,13 +343,21 @@ After installation, here are the essential commands:
 - **Code actions**: `<leader>ca`
 - **Rename**: `<leader>rn`
 
-### Git (vim-fugitive)
+### Git (vim-fugitive, gitsigns)
 
 - **Git status**: `<leader>gs`
 - **Git blame**: `<leader>gb`
 - **Git diff**: `<leader>gd`
 - **Git commit**: `<leader>gc`
 - **Fugitive help**: `<leader>g?`
+- **Git next hunk**: `]g`
+- **Git prev hunk**: `[g`
+- Git Preview Hunk: `<leader>ghp`
+- Git Stage Hunk: `<leader>ghs`
+- Git Reset Hunk: `<leader>ghr`
+- Git Undo Stage Hunk: `<leader>ghu`
+- Git Stage Buffer: `<leader>ghS`
+- Git Reset Buffer: `<leader>ghR`
 
 ### Testing (Neotest)
 
@@ -461,6 +471,7 @@ telescope.nvim
 tokyonight.nvim
 undotree
 vim-fugitive
+gitsigns
 which-key.nvim
 yanky.nvim
 ```
@@ -673,20 +684,28 @@ Install debug adapters via Mason:
 | `<leader>fb` | Normal | Find buffers    | Telescope (built-in) |
 | `<leader>fh` | Normal | Help tags       | Telescope (built-in) |
 
-### Git (vim-fugitive)
+### Git (vim-fugitive, gitsigns)
 
-| Keymap       | Mode   | Description                   |
-| ------------ | ------ | ----------------------------- |
-| `<leader>gs` | Normal | Git status                    |
-| `<leader>gb` | Normal | Git blame                     |
-| `<leader>gd` | Normal | Git diff (vertical split)     |
-| `<leader>gc` | Normal | Git commit                    |
-| `<leader>g?` | Normal | Fugitive help                 |
-| `<leader>gS` | Normal | Git status (Telescope)        |
-| `<leader>gB` | Normal | Git branches (Telescope)      |
-| `<leader>gC` | Normal | Git commits (Telescope)       |
-| `<leader>gF` | Normal | Git tracked files (Telescope) |
-| `<leader>gT` | Normal | Git stash (Telescope)         |
+| Keymap        | Mode   | Description                   |
+| ------------- | ------ | ----------------------------- |
+| `<leader>gs`  | Normal | Git status                    |
+| `<leader>gb`  | Normal | Git blame                     |
+| `<leader>gd`  | Normal | Git diff (vertical split)     |
+| `<leader>gc`  | Normal | Git commit                    |
+| `<leader>g?`  | Normal | Fugitive help                 |
+| `<leader>gS`  | Normal | Git status (Telescope)        |
+| `<leader>gB`  | Normal | Git branches (Telescope)      |
+| `<leader>gC`  | Normal | Git commits (Telescope)       |
+| `<leader>gF`  | Normal | Git tracked files (Telescope) |
+| `<leader>gT`  | Normal | Git stash (Telescope)         |
+| `]g`          | Normal | Git next hunk                 |
+| `[g`          | Normal | Git prev hunk                 |
+| `<leader>ghp` | Normal | Git Preview Hunk              |
+| `<leader>ghs` | Normal | Git Stage Hunk                |
+| `<leader>ghr` | Normal | Git Reset Hunk                |
+| `<leader>ghu` | Normal | Git Undo Stage Hunk           |
+| `<leader>ghS` | Normal | Git Stage Buffer              |
+| `<leader>ghR` | Normal | Git Reset Buffer              |
 
 ### Harpoon (Quick File Navigation)
 
