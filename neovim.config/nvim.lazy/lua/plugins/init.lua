@@ -62,6 +62,15 @@ require('lazy').setup({
     end,
   },
   {
+    'lewis6991/gitsigns.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    config = function()
+      require(configpath .. 'gitsigns')
+    end,
+  },
+  {
     'mbbill/undotree',
     config = function()
       require(configpath .. 'undotree')
@@ -86,7 +95,7 @@ require('lazy').setup({
     'stevearc/conform.nvim',
     opts = require(configpath .. 'conform').options(),
     config = function(_, opts)
-      require('conform').setup(options)
+      require('conform').setup(opts)
       require(configpath .. 'conform').config()
     end,
   },
