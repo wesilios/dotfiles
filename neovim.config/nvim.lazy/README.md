@@ -82,7 +82,7 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 
 | Tool               | Purpose             | Why Required                           |
 | ------------------ | ------------------- | -------------------------------------- |
-| **Neovim 0.11.5+** | Editor              | Core requirement                       |
+| **Neovim 0.11.7+** | Editor              | Core requirement                       |
 | **Git**            | Version control     | Plugin manager, vim-fugitive, gitsigns |
 | **Nerd Font**      | Icons               | nvim-web-devicons, lualine             |
 | **Ripgrep (rg)**   | Text search         | Telescope live_grep, grep_string       |
