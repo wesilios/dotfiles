@@ -14,7 +14,7 @@ function M.options()
       typescriptreact = { 'prettier' },
       yaml = { 'yamlfmt' },
       yml = { 'yamlfmt' },
-      markdown = { 'prettier' },
+      markdown = { 'prettier_md' },
       c = { 'clang-format' },
       cpp = { 'clang-format' },
       cmake = { 'cmake_format' },
@@ -45,6 +45,15 @@ function M.options()
           'always',
         },
       },
+      prettier_md = function()
+        return {
+          inherit = true,
+          prepend_args = {
+            '--prose-wrap',
+            'preserve',
+          },
+        }
+      end,
       -- clang-format configuration (for C/C++)
       ['clang-format'] = {
         prepend_args = {
