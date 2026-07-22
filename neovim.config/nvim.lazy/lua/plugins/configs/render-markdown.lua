@@ -3,6 +3,7 @@ local M = {}
 
 function M.setup()
   require('render-markdown').setup({
+    latex = { enabled = false },
     -- Enable/disable rendering on startup
     enabled = true,
 
@@ -160,4 +161,3 @@ map('n', '<leader>me', ':RenderMarkdown enable<CR>', { desc = 'Enable Markdown R
 map('n', '<leader>md', ':RenderMarkdown disable<CR>', { desc = 'Disable Markdown Rendering' })
 
 return M
-

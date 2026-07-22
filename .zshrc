@@ -82,3 +82,5 @@ elif [[ -f ~/.p10k.zsh ]]; then
     zinit light romkatv/powerlevel10k
     source ~/.p10k.zsh
 fi
+
+export PATH="$HOME/.dotnet/tools:$PATH"

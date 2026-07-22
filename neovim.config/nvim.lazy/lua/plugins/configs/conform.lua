@@ -18,7 +18,7 @@ function M.options()
       c = { 'clang-format' },
       cpp = { 'clang-format' },
       cmake = { 'cmake_format' },
-      dockerfile = { 'hadolint' },
+      -- dockerfile = { 'hadolint' },
       -- dotenv files - use basic formatters
       ['env'] = { 'trim_whitespace', 'trim_newlines' },
       -- C# formatting is handled by Roslyn LSP
@@ -45,15 +45,13 @@ function M.options()
           'always',
         },
       },
-      prettier_md = function()
-        return {
-          inherit = true,
-          prepend_args = {
-            '--prose-wrap',
-            'preserve',
-          },
-        }
-      end,
+      prettier_md = {
+        inherit = true,
+        prepend_args = {
+          '--prose-wrap',
+          'preserve',
+        },
+      },
       -- clang-format configuration (for C/C++)
       ['clang-format'] = {
         prepend_args = {
@@ -76,14 +74,6 @@ function M.options()
           'indent=2,max_line_length=120,retain_line_breaks=true',
         },
       },
-      -- hadolint configuration (for Dockerfile)
-      hadolint = {
-        prepend_args = {
-          '--format',
-          'json',
-        },
-      },
-      -- stylua is configured via stylua.toml file
     },
 
     format_on_save = {
