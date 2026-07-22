@@ -57,7 +57,7 @@ dotfiles/
 
 | Tool      | Version | Install                                     |
 | --------- | ------- | ------------------------------------------- |
-| Neovim    | 0.11.7+ | `apt/brew install neovim`                   |
+| Neovim    | 0.12.0+ | `apt/brew install neovim`                   |
 | Git       | any     | `apt/brew install git`                      |
 | Zsh       | 5.0+    | `apt/brew install zsh`                      |
 | Tmux      | 3.1+    | `apt/brew install tmux`                     |
