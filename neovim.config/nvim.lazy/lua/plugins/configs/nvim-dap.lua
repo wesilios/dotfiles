@@ -1,15 +1,30 @@
 local dap = require('dap')
 
-local mason_path = vim.fn.stdpath('data') .. '/mason/packages/netcoredbg/netcoredbg'
+local mason_path = vim.fn.stdpath('data') .. '/mason/packages'
+local netcoredbg = mason_path .. 'netcoredbg/netcoredbg'
+local codelldb = mason_path .. '/codelldb/extension/adapter/codelldb'
+-- local mason_path = vim.fn.stdpath('data') .. '/mason/packages/netcoredbg/netcoredbg'
 
+--- Adapter
 local netcoredbg_adapter = {
   type = 'executable',
-  command = mason_path,
+  command = netcoredbg,
   args = { '--interpreter=vscode' },
 }
 
 dap.adapters.netcoredbg = netcoredbg_adapter -- needed for normal debugging
 dap.adapters.coreclr = netcoredbg_adapter -- needed for unit test debugging
+
+local codelldb_adapter = {
+  type = 'server',
+  port = '${port}',
+  executable = {
+    command = codelldb,
+    args = { '--port', '${port}' },
+  },
+}
+
+dap.adapters.codelldb = codelldb_adapter
 
 dap.configurations.cs = {
   {
@@ -41,6 +56,44 @@ dap.configurations.cs = {
     -- end,
   },
 }
+
+--- For c,cpp
+local c_cpp_config = {
+  {
+    name = 'launch c/cpp - codelldb',
+    type = 'codelldb',
+    request = 'launch',
+
+    program = function()
+      local file = vim.fn.expand('%:p')
+      local filename = vim.fn.expand('%:t:r')
+      local dir = vim.fn.expand('%:p:h')
+
+      local executable = dir .. '/' .. filename
+
+      local command = string.format(
+        'gcc %s -Wall -Wextra -std=c17 -g -lm -o %s',
+        vim.fn.shellescape(file),
+        vim.fn.shellescape(executable)
+      )
+
+      local result = vim.fn.system(command)
+
+      if vim.v.shell_error ~= 0 then
+        vim.notify('Compilation failed:\n' .. result, vim.log.levels.ERROR)
+        return nil
+      end
+
+      return executable
+    end,
+
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+  },
+}
+
+dap.configurations.c = c_cpp_config
+dap.configurations.cpp = c_cpp_config
 
 local map = vim.keymap.set
 
