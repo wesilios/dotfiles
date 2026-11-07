@@ -76,7 +76,7 @@ See [nvim.lazy/README.md](./nvim.lazy/README.md#-requirements) for complete requ
 
 **Quick summary:**
 
-- Neovim 0.11.7+, Git, Nerd Font
+- Neovim 0.12.0+, Git, Nerd Font
 - **Ripgrep** (required for live grep)
 - **Luarocks** (required for plugin management)
 - C compiler (for Treesitter)

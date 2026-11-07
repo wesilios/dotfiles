@@ -1,7 +1,7 @@
 local dap = require('dap')
 
 local mason_path = vim.fn.stdpath('data') .. '/mason/packages'
-local netcoredbg = mason_path .. 'netcoredbg/netcoredbg'
+local netcoredbg = mason_path .. '/netcoredbg/netcoredbg'
 local codelldb = mason_path .. '/codelldb/extension/adapter/codelldb'
 -- local mason_path = vim.fn.stdpath('data') .. '/mason/packages/netcoredbg/netcoredbg'
 
@@ -58,42 +58,77 @@ dap.configurations.cs = {
 }
 
 --- For c,cpp
-local c_cpp_config = {
-  {
-    name = 'launch c/cpp - codelldb',
-    type = 'codelldb',
-    request = 'launch',
+-- Compile the current file with debug info and return the executable path
+local function build_current_file(compiler, flags)
+  local file = vim.fn.expand('%:p')
+  local executable = vim.fn.expand('%:p:r')
 
-    program = function()
-      local file = vim.fn.expand('%:p')
-      local filename = vim.fn.expand('%:t:r')
-      local dir = vim.fn.expand('%:p:h')
+  local command = string.format(
+    '%s %s -o %s %s',
+    compiler,
+    vim.fn.shellescape(file),
+    vim.fn.shellescape(executable),
+    flags
+  )
 
-      local executable = dir .. '/' .. filename
+  local result = vim.fn.system(command)
 
-      local command = string.format(
-        'gcc %s -Wall -Wextra -std=c17 -g -lm -o %s',
-        vim.fn.shellescape(file),
-        vim.fn.shellescape(executable)
-      )
+  if vim.v.shell_error ~= 0 then
+    vim.notify('Compilation failed:\n' .. result, vim.log.levels.ERROR)
+    return nil
+  end
 
-      local result = vim.fn.system(command)
+  return executable
+end
 
-      if vim.v.shell_error ~= 0 then
-        vim.notify('Compilation failed:\n' .. result, vim.log.levels.ERROR)
-        return nil
-      end
+local function pick_executable()
+  return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+end
 
-      return executable
-    end,
+local function make_configs(compiler, flags)
+  return {
+    {
+      name = 'launch - build current file (codelldb)',
+      type = 'codelldb',
+      request = 'launch',
+      program = function()
+        return build_current_file(compiler, flags)
+      end,
+      cwd = '${workspaceFolder}',
+      stopOnEntry = false,
+    },
+    {
+      name = 'launch - pick executable (codelldb)',
+      type = 'codelldb',
+      request = 'launch',
+      program = pick_executable,
+      cwd = '${workspaceFolder}',
+      stopOnEntry = false,
+    },
+    {
+      name = 'launch - pick executable with args (codelldb)',
+      type = 'codelldb',
+      request = 'launch',
+      program = pick_executable,
+      args = function()
+        local input = vim.fn.input('Arguments: ')
+        return vim.split(input, ' ', { trimempty = true })
+      end,
+      cwd = '${workspaceFolder}',
+      stopOnEntry = false,
+    },
+    {
+      name = 'attach - process (codelldb)',
+      type = 'codelldb',
+      request = 'attach',
+      pid = require('dap.utils').pick_process,
+      cwd = '${workspaceFolder}',
+    },
+  }
+end
 
-    cwd = '${workspaceFolder}',
-    stopOnEntry = false,
-  },
-}
-
-dap.configurations.c = c_cpp_config
-dap.configurations.cpp = c_cpp_config
+dap.configurations.c = make_configs('gcc', '-Wall -Wextra -std=c17 -g -O0 -lm')
+dap.configurations.cpp = make_configs('g++', '-Wall -Wextra -std=c++20 -g -O0')
 
 local map = vim.keymap.set
 

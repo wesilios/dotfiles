@@ -22,7 +22,7 @@ This is the **absolute bare minimum** to run Neovim with essential plugins.
 | **bash** | Shell (minimal) | ~1MB |
 | **ripgrep** | Text search (Telescope required) | ~5MB |
 | **fd** | File finder (Telescope optional) | ~2MB |
-| **gcc** | C compiler (Treesitter) | ~50MB |
+| **gcc/g++** | C/C++ compiler (Treesitter, DAP builds) | ~50MB |
 | **musl-dev** | C library headers | ~20MB |
 | **make** | Build tool | ~5MB |
 | **lua5.1** | Lua runtime | ~5MB |

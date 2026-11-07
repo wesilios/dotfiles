@@ -19,6 +19,7 @@ RUN apk add --no-cache \
         fd \
         # Build tools (for Treesitter)
         gcc \
+        g++ \
         musl-dev \
         make \
         # Lua for Neovim

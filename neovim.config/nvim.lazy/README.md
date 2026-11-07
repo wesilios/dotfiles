@@ -19,7 +19,7 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 - **Git Integration**: vim-fugitive with Telescope integration
 - **Testing Framework**: Neotest with .NET support
 - **LSP Support**: C#, Lua, C/C++, and more with auto-completion
-- **Debugging**: DAP integration for C# and other languages
+- **Debugging**: DAP integration for C#, C and C++
 - **Auto-formatting**: Format on save with language-specific rules (prettier, stylua, clang-format)
 - **Auto-pairs**: Automatic bracket, quote, and parenthesis closing with mini.pairs
 - **Surround**: Add/delete/replace surrounding brackets, quotes, tags with mini.surround
@@ -82,7 +82,7 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 
 | Tool               | Purpose             | Why Required                           |
 | ------------------ | ------------------- | -------------------------------------- |
-| **Neovim 0.11.7+** | Editor              | Core requirement                       |
+| **Neovim 0.12.0+** | Editor              | Core requirement                       |
 | **Git**            | Version control     | Plugin manager, vim-fugitive, gitsigns |
 | **Nerd Font**      | Icons               | nvim-web-devicons, lualine             |
 | **Ripgrep (rg)**   | Text search         | Telescope live_grep, grep_string       |
@@ -627,6 +627,7 @@ already configured in `mason.lua`.
 **Supported Languages:**
 
 - **C#** - `netcoredbg` (for .NET Core debugging)
+- **C/C++** - `codelldb` (requires `gcc`/`g++` for the build-and-debug config)
 
 **DAP Features:**
 
@@ -646,6 +647,19 @@ Install debug adapters via Mason:
 ```vim
 :MasonInstall netcoredbg
 ```
+
+**For C/C++:**
+
+```vim
+:MasonInstall codelldb
+```
+
+Press `<F5>` in a C/C++ file and pick a configuration:
+
+- `launch - build current file`: compiles the file with `gcc`/`g++` (`-g -O0`) and debugs it
+- `launch - pick executable`: debug a prebuilt binary (Make/CMake projects)
+- `launch - pick executable with args`: same, with command line arguments
+- `attach - process`: attach to a running process
 
 **Configuration:**
 
