@@ -178,8 +178,8 @@ if $INSTALL_ZSH; then
         echo -e "  ${CYAN}Using Oh My Posh${NC}"
 
         link \
-            "$DOTFILES_DIR/config/oh-my-posh/theme.yaml" \
-            "$HOME/.config/oh-my-posh/theme.yaml"
+            "$DOTFILES_DIR/config/oh-my-posh/theme.toml" \
+            "$HOME/.config/oh-my-posh/theme.toml"
     fi
         echo ""
 
