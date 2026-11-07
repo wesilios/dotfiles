@@ -235,6 +235,16 @@ if $INSTALL_NVIM; then
         fi
     fi
 
+    if ! command_exists tree-sitter; then
+        echo -e "${YELLOW}  [!]  tree-sitter CLI not found — Treesitter parsers cannot be compiled${NC}"
+        if [ "$PLATFORM" = "macOS" ]; then
+            echo -e "${CYAN}       brew install tree-sitter-cli${NC}"
+        else
+            echo -e "${CYAN}       sudo pacman -S tree-sitter-cli   # Arch${NC}"
+            echo -e "${CYAN}       cargo install tree-sitter-cli --locked   # Debian 12/older distros (npm binary needs glibc 2.39+)${NC}"
+        fi
+    fi
+
     # Populate config/nvim from neovim.config/nvim.lazy (source of truth)
     if [ ! -d "$DOTFILES_DIR/config/nvim" ]; then
         if [ -d "$DOTFILES_DIR/neovim.config/nvim.lazy" ]; then

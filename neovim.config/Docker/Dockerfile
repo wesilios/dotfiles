@@ -21,6 +21,7 @@ RUN apk add --no-cache \
         gcc \
         g++ \
         musl-dev \
+        tree-sitter-cli \
         make \
         # Lua for Neovim
         lua5.1 \

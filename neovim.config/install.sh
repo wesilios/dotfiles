@@ -79,6 +79,19 @@ else
     echo -e "${GREEN}[OK] Ripgrep found: $(rg --version | head -n1)${NC}"
 fi
 
+if ! command_exists tree-sitter; then
+    echo -e "${YELLOW}[!] tree-sitter CLI not found (REQUIRED to compile nvim-treesitter parsers)${NC}"
+    if [ "$PLATFORM" = "Linux" ]; then
+        echo -e "${CYAN}    Install: sudo pacman -S tree-sitter-cli (Arch)${NC}"
+        echo -e "${CYAN}            cargo install tree-sitter-cli --locked (Debian 12/older distros, needs rustup)${NC}"
+        echo -e "${CYAN}            npm install -g tree-sitter-cli (only if glibc >= 2.39)${NC}"
+    else
+        echo -e "${CYAN}    Install: brew install tree-sitter-cli${NC}"
+    fi
+else
+    echo -e "${GREEN}[OK] tree-sitter CLI found: $(tree-sitter --version)${NC}"
+fi
+
 if ! command_exists fd; then
     echo -e "${YELLOW}[!] fd not found (optional, improves file finding)${NC}"
     if [ "$PLATFORM" = "Linux" ]; then
