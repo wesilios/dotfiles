@@ -17,12 +17,13 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   {
     'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
+    lazy = false,
+    build = ':TSUpdate',
     config = function()
       require(configpath .. 'treesitter')
     end,
-    run = ':TSUpdate',
   },
-  { 'nvim-treesitter/playground' },
   { 'nvim-lua/plenary.nvim' },
   {
     'nvim-telescope/telescope.nvim',

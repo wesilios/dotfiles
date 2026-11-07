@@ -19,7 +19,7 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 - **Git Integration**: vim-fugitive with Telescope integration
 - **Testing Framework**: Neotest with .NET support
 - **LSP Support**: C#, Lua, C/C++, and more with auto-completion
-- **Debugging**: DAP integration for C# and other languages
+- **Debugging**: DAP integration for C#, C and C++
 - **Auto-formatting**: Format on save with language-specific rules (prettier, stylua, clang-format)
 - **Auto-pairs**: Automatic bracket, quote, and parenthesis closing with mini.pairs
 - **Surround**: Add/delete/replace surrounding brackets, quotes, tags with mini.surround
@@ -82,12 +82,29 @@ A lightweight, fast, and fully Lua-based Neovim setup built with **lazy.nvim**, 
 
 | Tool               | Purpose             | Why Required                           |
 | ------------------ | ------------------- | -------------------------------------- |
-| **Neovim 0.11.7+** | Editor              | Core requirement                       |
+| **Neovim 0.12.0+** | Editor              | Core requirement                       |
 | **Git**            | Version control     | Plugin manager, vim-fugitive, gitsigns |
 | **Nerd Font**      | Icons               | nvim-web-devicons, lualine             |
 | **Ripgrep (rg)**   | Text search         | Telescope live_grep, grep_string       |
 | **C Compiler**     | Build parsers       | nvim-treesitter compilation            |
+| **tree-sitter CLI**| Build parsers       | nvim-treesitter (`main` branch) installs parsers with it |
 | **Luarocks**       | Lua package manager | lazy.nvim plugin management            |
+
+#### tree-sitter CLI
+
+nvim-treesitter (`main` branch) compiles parsers with the `tree-sitter` CLI. Without it no parsers are installed and
+syntax highlighting is missing. A `tree-sitter` version that matches your Neovim's ABI (Neovim 0.12 needs ABI 15) is
+needed; nvim-treesitter requires 0.26.1 or later.
+
+- **Arch**: `sudo pacman -S tree-sitter-cli`
+- **macOS**: `brew install tree-sitter-cli`
+- **Windows**: `scoop install tree-sitter`
+- **Debian 12 / Ubuntu < 24.04 / other older glibc**: build from source with Rust:
+  `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`, then
+  `cargo install tree-sitter-cli --locked` (adds `~/.cargo/bin` to PATH)
+- **npm** (`npm install -g tree-sitter-cli`): prebuilt binary needs glibc 2.39+ (Ubuntu 24.04, Debian 13, Fedora 40+);
+  on older systems it fails with ``GLIBC_2.39 not found``. nvim-treesitter also recommends against npm.
+- Verify with `tree-sitter --version` and `:checkhealth nvim-treesitter`
 
 #### C Compiler by Platform
 
@@ -152,6 +169,9 @@ choco install neovim git ripgrep mingw lua luarocks -y
 # Optional tools
 choco install fd stylua python3 nodejs -y
 
+# tree-sitter CLI (required for Treesitter parsers)
+npm install -g tree-sitter-cli
+
 # Formatters (if needed)
 npm install -g prettier neovim
 ```
@@ -160,7 +180,7 @@ npm install -g prettier neovim
 
 ```powershell
 scoop install neovim git ripgrep mingw lua luarocks
-scoop install fd stylua python3 nodejs
+scoop install fd stylua python3 nodejs tree-sitter
 npm install -g prettier
 ```
 
@@ -179,6 +199,20 @@ winget install BurntSushi.ripgrep.MSVC
 - MinGW-w64: `choco install mingw`
 - TDM-GCC: Download from [tdm-gcc.tdragon.net](https://jmeubank.github.io/tdm-gcc/)
 - MSVC: Install Visual Studio Build Tools
+
+**tree-sitter CLI on Windows:** the prebuilt binary works on Windows (the glibc issue is Linux-only).
+Use `npm install -g tree-sitter-cli` or `scoop install tree-sitter`. Make sure it is on `PATH`
+(`tree-sitter --version`) and run `:checkhealth nvim-treesitter`.
+
+**Company/locked-down Windows machines:**
+
+- If npm/scoop/choco are blocked, download `tree-sitter-windows-x64.gz` from the
+  [tree-sitter releases](https://github.com/tree-sitter/tree-sitter/releases), extract it to `tree-sitter.exe`, and put it
+  in a folder on your user `PATH` (e.g. `%USERPROFILE%\bin`). No admin rights needed.
+- A C compiler is also required to build parsers. If you cannot install MinGW, Visual Studio Build Tools (`cl.exe`)
+  also works; start nvim from a "Developer PowerShell" so `cl` is found.
+- If a corporate proxy blocks GitHub/npm, set `HTTPS_PROXY`/`npm config set proxy` before running the installers.
+- Version requirement: Neovim 0.12.0+ and tree-sitter CLI 0.26.1+.
 
 #### 🐧 Linux
 
@@ -627,6 +661,7 @@ already configured in `mason.lua`.
 **Supported Languages:**
 
 - **C#** - `netcoredbg` (for .NET Core debugging)
+- **C/C++** - `codelldb` (requires `gcc`/`g++` for the build-and-debug config)
 
 **DAP Features:**
 
@@ -646,6 +681,19 @@ Install debug adapters via Mason:
 ```vim
 :MasonInstall netcoredbg
 ```
+
+**For C/C++:**
+
+```vim
+:MasonInstall codelldb
+```
+
+Press `<F5>` in a C/C++ file and pick a configuration:
+
+- `launch - build current file`: compiles the file with `gcc`/`g++` (`-g -O0`) and debugs it
+- `launch - pick executable`: debug a prebuilt binary (Make/CMake projects)
+- `launch - pick executable with args`: same, with command line arguments
+- `attach - process`: attach to a running process
 
 **Configuration:**
 

@@ -51,6 +51,13 @@ if (-not (Test-Command rg)) {
     Write-Host "[OK] Ripgrep found: $(rg --version | Select-Object -First 1)" -ForegroundColor Green
 }
 
+if (-not (Test-Command tree-sitter)) {
+    Write-Host "[!] tree-sitter CLI not found (REQUIRED to compile nvim-treesitter parsers)" -ForegroundColor Yellow
+    Write-Host "    Install: scoop install tree-sitter  OR  cargo install tree-sitter-cli --locked" -ForegroundColor Cyan
+} else {
+    Write-Host "[OK] tree-sitter CLI found: $(tree-sitter --version)" -ForegroundColor Green
+}
+
 if (-not (Test-Command fd)) {
     Write-Host "[!] fd not found (optional, improves file finding)" -ForegroundColor Yellow
     Write-Host "    Install: choco install fd" -ForegroundColor Cyan

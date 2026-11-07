@@ -9,7 +9,7 @@ RUN pacman -Syu --noconfirm --needed archlinux-keyring && \
     pacman -S --noconfirm --needed \
         sudo curl git unzip zsh \
         neovim ripgrep fd gcc make luarocks \
-        stylua python python-pip nodejs npm && \
+        stylua python python-pip nodejs npm tree-sitter-cli && \
     \
     # Remove package caches aggressively
     yes | pacman -Scc && \
