@@ -66,6 +66,7 @@ Write-Host ""
 # ─── Prerequisite checks ─────────────────────────────────────────────────────
 Write-Host "Checking prerequisites..." -ForegroundColor White
 $missing = @()
+$Notes   = @()   # post-install recommendations, printed at the end
 function Check-Cmd($cmd, $label) {
     if (Test-Command $cmd) { Write-Host "  [ok] $label" -ForegroundColor Green }
     else { Write-Host "  [!!] $label not found" -ForegroundColor Red; $script:missing += $label }
@@ -103,6 +104,33 @@ if ($InstallProfile) {
 # ─── Neovim ──────────────────────────────────────────────────────────────────
 if ($InstallNvim) {
     Write-Host "Setting up Neovim..." -ForegroundColor White
+
+    # tree-sitter CLI (required by nvim-treesitter to compile parsers)
+    if (Test-Command tree-sitter) {
+        Write-Host "  [ok] tree-sitter CLI found" -ForegroundColor Green
+    } else {
+        Write-Host "  tree-sitter CLI not found - trying to install it..." -ForegroundColor Yellow
+        $env:PATH = "$HOME\.cargo\bin;$env:PATH"
+
+        function Test-TreeSitter { try { $null = tree-sitter --version 2>$null; $LASTEXITCODE -eq 0 } catch { $false } }
+        $installed = $false
+        # Try scoop -> cargo -> npm; accept an attempt only if the binary actually runs.
+        if (Test-Command scoop) { try { scoop install tree-sitter *> $null } catch {} ; $installed = (Test-Command tree-sitter) -and (Test-TreeSitter) }
+        if (-not $installed -and (Test-Command cargo)) { try { cargo install tree-sitter-cli --locked *> $null } catch {} ; $installed = (Test-Command tree-sitter) -and (Test-TreeSitter) }
+        if (-not $installed -and (Test-Command npm))   { try { npm install -g tree-sitter-cli *> $null } catch {} ; $installed = (Test-Command tree-sitter) -and (Test-TreeSitter) }
+
+        if ($installed) {
+            Write-Host "  [ok] tree-sitter CLI installed: $(tree-sitter --version)" -ForegroundColor Green
+        } else {
+            Write-Host "  [!] Could not install tree-sitter CLI automatically (see notes at the end)" -ForegroundColor Yellow
+            $Notes += "tree-sitter CLI is NOT installed - nvim-treesitter cannot compile parsers until it is."
+            $Notes += "    scoop install tree-sitter"
+            $Notes += "    cargo install tree-sitter-cli --locked     (needs Rust + a C compiler)"
+            $Notes += "    npm install -g tree-sitter-cli"
+            $Notes += "    Then run: nvim --headless `"+Lazy! sync`" +qa"
+        }
+    }
+
     $nvimInstaller = Join-Path $DotfilesDir "neovim.config\install.ps1"
     if (Test-Path $nvimInstaller) {
         & $nvimInstaller
@@ -124,3 +152,11 @@ if ($InstallProfile) {
     Write-Host "    Edit theme: ~\.config\oh-my-posh\theme.toml"
 }
 Write-Host ""
+
+if ($Notes.Count -gt 0) {
+    Write-Host "  ========================================" -ForegroundColor Yellow
+    Write-Host "    Action needed" -ForegroundColor Yellow
+    Write-Host "  ========================================" -ForegroundColor Yellow
+    foreach ($n in $Notes) { Write-Host "  $n" -ForegroundColor Yellow }
+    Write-Host ""
+}
