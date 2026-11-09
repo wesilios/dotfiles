@@ -121,6 +121,7 @@ echo ""
 echo -e "${BOLD}Checking prerequisites...${NC}"
 
 MISSING=()
+NOTES=()   # post-install recommendations, printed at the end
 
 check() {
     local cmd="$1" label="$2"
@@ -178,8 +179,8 @@ if $INSTALL_ZSH; then
         echo -e "  ${CYAN}Using Oh My Posh${NC}"
 
         link \
-            "$DOTFILES_DIR/config/oh-my-posh/theme.yaml" \
-            "$HOME/.config/oh-my-posh/theme.yaml"
+            "$DOTFILES_DIR/config/oh-my-posh/theme.toml" \
+            "$HOME/.config/oh-my-posh/theme.toml"
     fi
         echo ""
 
@@ -236,13 +237,37 @@ if $INSTALL_NVIM; then
     fi
 
     if ! command_exists tree-sitter; then
-        echo -e "${YELLOW}  [!]  tree-sitter CLI not found — Treesitter parsers cannot be compiled${NC}"
-        if [ "$PLATFORM" = "macOS" ]; then
-            echo -e "${CYAN}       brew install tree-sitter-cli${NC}"
-        else
-            echo -e "${CYAN}       sudo pacman -S tree-sitter-cli   # Arch${NC}"
-            echo -e "${CYAN}       cargo install tree-sitter-cli --locked   # Debian 12/older distros (npm binary needs glibc 2.39+)${NC}"
+        echo -e "${YELLOW}  tree-sitter CLI not found — trying to install it...${NC}"
+        export PATH="$HOME/.cargo/bin:$PATH"
+
+        # Try brew → cargo → npm; accept an attempt only if the binary actually runs
+        # (the npm binary needs glibc 2.39+, so it may install but fail to execute).
+        if command_exists brew; then
+            brew install tree-sitter-cli >/dev/null 2>&1 || true
         fi
+        if ! tree-sitter --version >/dev/null 2>&1 && command_exists cargo; then
+            cargo install tree-sitter-cli --locked >/dev/null 2>&1 || true
+        fi
+        if ! tree-sitter --version >/dev/null 2>&1 && command_exists npm; then
+            npm install -g tree-sitter-cli >/dev/null 2>&1 || true
+        fi
+
+        if tree-sitter --version >/dev/null 2>&1; then
+            echo -e "${GREEN}  [ok] tree-sitter CLI installed: $(tree-sitter --version)${NC}"
+        else
+            echo -e "${YELLOW}  [!]  Could not install tree-sitter CLI automatically (see notes at the end)${NC}"
+            NOTES+=("tree-sitter CLI is NOT installed — nvim-treesitter cannot compile parsers until it is.")
+            if [ "$PLATFORM" = "macOS" ]; then
+                NOTES+=("    brew install tree-sitter-cli")
+            else
+                NOTES+=("    sudo pacman -S tree-sitter-cli                 # Arch")
+                NOTES+=("    cargo install tree-sitter-cli --locked         # any distro with Rust (needs a C compiler); best for Debian 12/older")
+                NOTES+=("    npm install -g tree-sitter-cli                 # needs glibc 2.39+ (Ubuntu 24.04+)")
+            fi
+            NOTES+=("    Then run: nvim --headless \"+Lazy! sync\" +qa")
+        fi
+    else
+        echo -e "${GREEN}  [ok] tree-sitter CLI found${NC}"
     fi
 
     # Populate config/nvim from neovim.config/nvim.lazy (source of truth)
@@ -344,3 +369,13 @@ if $INSTALL_NVIM; then
 fi
 
 echo ""
+
+if [ ${#NOTES[@]} -gt 0 ]; then
+    echo -e "${YELLOW}${BOLD}══════════════════════════════════════════${NC}"
+    echo -e "${YELLOW}${BOLD}  Action needed${NC}"
+    echo -e "${YELLOW}${BOLD}══════════════════════════════════════════${NC}"
+    for note in "${NOTES[@]}"; do
+        echo -e "${YELLOW}  ${note}${NC}"
+    done
+    echo ""
+fi
