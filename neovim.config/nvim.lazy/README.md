@@ -477,7 +477,6 @@ require(configpath .. 'colorscheme').switchtorosepine('moon')
 ## Plugins Included
 
 ```
-Comment.nvim
 conform.nvim
 gruvbox.nvim
 harpoon

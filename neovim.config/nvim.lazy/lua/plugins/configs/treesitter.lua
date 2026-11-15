@@ -19,6 +19,7 @@ local parsers = {
   'markdown_inline',
   'javascript',
   'typescript',
+  'tsx',
   'c_sharp',
   'proto',
   'sql',
