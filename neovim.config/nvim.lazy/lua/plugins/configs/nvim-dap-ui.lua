@@ -29,3 +29,6 @@ end, { noremap = true, silent = true, desc = 'DAP: Eval expression' })
 map('v', '<leader>de', function()
   dapui.eval()
 end, { noremap = true, silent = true, desc = 'DAP: Eval selection' })
+
+-- Inline variable values while debugging
+require('nvim-dap-virtual-text').setup({})

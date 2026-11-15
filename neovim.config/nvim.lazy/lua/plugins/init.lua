@@ -121,6 +121,14 @@ require('lazy').setup({
     end,
   },
   {
+    -- Auto-install DAP adapters (codelldb, netcoredbg) on a fresh machine
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
+    dependencies = { 'williamboman/mason.nvim' },
+    config = function()
+      require(configpath .. 'mason-tool-installer')
+    end,
+  },
+  {
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
@@ -153,6 +161,7 @@ require('lazy').setup({
     'mfussenegger/nvim-dap',
     dependencies = {
       'rcarriga/nvim-dap-ui',
+      'theHamsta/nvim-dap-virtual-text',
     },
     config = function()
       require(configpath .. 'nvim-dap')

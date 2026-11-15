@@ -666,14 +666,15 @@ already configured in `mason.lua`.
 
 - Breakpoint management
 - Step through code (step over, step into, step out)
-- Variable inspection
+- Variable inspection (including inline values via nvim-dap-virtual-text)
 - Debug REPL
 - Automatic UI opening/closing
 - Unit test debugging with Neotest
 
 **Mason Installation:**
 
-Install debug adapters via Mason:
+`codelldb` and `netcoredbg` are installed automatically on first start by `mason-tool-installer.nvim`
+(`lua/plugins/configs/mason-tool-installer.lua`). To install manually:
 
 **For C# (.NET Core):**
 
@@ -1263,7 +1264,6 @@ git status
 - **actions-preview.nvim** - Better code actions UI with preview
 - **markdown-preview.nvim** - Browser-based markdown preview
 - **coverage.nvim** - Test coverage visualization
-- **nvim-dap-virtual-text** - Inline variable values while debugging
 
 ---
 
