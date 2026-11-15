@@ -199,12 +199,6 @@ require('lazy').setup({
     dependencies = { 'mfussenegger/nvim-dap' },
   },
   {
-    'numToStr/Comment.nvim',
-    config = function()
-      require(configpath .. 'comment')
-    end,
-  },
-  {
     'nvim-mini/mini.nvim',
     version = false,
     config = function()
@@ -239,3 +233,6 @@ require('lazy').setup({
     end,
   },
 })
+
+-- Built-in `gc` commenting (Comment.nvim was removed), plus gco/gcO/gcA
+require(configpath .. 'comment')

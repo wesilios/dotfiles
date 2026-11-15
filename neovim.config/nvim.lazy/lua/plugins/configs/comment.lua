@@ -1,62 +1,35 @@
-local comment = require('Comment')
-
--- Setup Comment.nvim with default settings
-comment.setup({
-  -- Add a space between comment and the line
-  padding = true,
-
-  -- Whether the cursor should stay at its position
-  sticky = true,
-
-  -- Lines to be ignored while (un)comment
-  ignore = '^$', -- Ignore empty lines
-
-  -- LHS of toggle mappings in NORMAL mode
-  toggler = {
-    line = 'gcc', -- Line-comment toggle keymap
-    block = 'gbc', -- Block-comment toggle keymap
-  },
-
-  -- LHS of operator-pending mappings in NORMAL and VISUAL mode
-  opleader = {
-    line = 'gc', -- Line-comment keymap
-    block = 'gb', -- Block-comment keymap
-  },
-
-  -- LHS of extra mappings
-  extra = {
-    above = 'gcO', -- Add comment on the line above
-    below = 'gco', -- Add comment on the line below
-    eol = 'gcA', -- Add comment at the end of line
-  },
-
-  -- Enable keybindings
-  -- NOTE: If given `false` then the plugin won't create any mappings
-  mappings = {
-    basic = true, -- Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
-    extra = true, -- Extra mapping; `gco`, `gcO`, `gcA`
-  },
-
-  -- Function to call before (un)comment
-  pre_hook = nil,
-
-  -- Function to call after (un)comment
-  post_hook = nil,
-})
-
--- Additional keymaps with descriptions for which-key
+-- Commenting uses Neovim's built-in `gc` (0.10+): treesitter-aware, so JSX/TSX/Vue/Razor
+-- injections pick the right commentstring. Comment.nvim (archived) failed with
+-- "[Comment.nvim] nil" on the nvim-treesitter `main` branch, so it was removed.
+--   gcc        toggle line        gc{motion} / {Visual}gc  toggle range
+-- The built-in has no gco/gcO/gcA, so keep those from the old setup:
 local map = vim.keymap.set
 
--- Normal mode
-map('n', 'gcc', '<Plug>(comment_toggle_linewise_current)', { desc = 'Toggle comment line' })
-map('n', 'gbc', '<Plug>(comment_toggle_blockwise_current)', { desc = 'Toggle comment block' })
+-- Append a comment (using 'commentstring') to the current line and start typing inside it
+local function append_comment()
+  local left, right = vim.bo.commentstring:match('^(.-)%s*%%s%s*(.-)$')
+  if not left or left == '' then
+    vim.notify('No commentstring for filetype ' .. vim.bo.filetype, vim.log.levels.WARN)
+    return
+  end
+  local line = vim.api.nvim_get_current_line()
+  local sep = line:match('%S') and ' ' or ''
+  local suffix = right ~= '' and (' ' .. right) or ''
+  vim.api.nvim_set_current_line(line .. sep .. left .. ' ' .. suffix)
+  vim.cmd('startinsert!')
+  if suffix ~= '' then
+    vim.api.nvim_feedkeys(vim.keycode(('<Left>'):rep(#suffix)), 'n', false)
+  end
+end
 
--- Visual mode
-map('x', 'gc', '<Plug>(comment_toggle_linewise_visual)', { desc = 'Toggle comment (linewise)' })
-map('x', 'gb', '<Plug>(comment_toggle_blockwise_visual)', { desc = 'Toggle comment (blockwise)' })
+map('n', 'gco', function()
+  vim.cmd('normal! o')
+  append_comment()
+end, { desc = 'Comment line below' })
 
--- Extra mappings
-map('n', 'gco', '<Plug>(comment_toggle_linewise)o', { desc = 'Comment line below' })
-map('n', 'gcO', '<Plug>(comment_toggle_linewise)O', { desc = 'Comment line above' })
-map('n', 'gcA', '<Plug>(comment_toggle_linewise)$', { desc = 'Comment end of line' })
+map('n', 'gcO', function()
+  vim.cmd('normal! O')
+  append_comment()
+end, { desc = 'Comment line above' })
 
+map('n', 'gcA', append_comment, { desc = 'Comment end of line' })
