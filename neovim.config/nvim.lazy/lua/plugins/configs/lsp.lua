@@ -22,21 +22,18 @@ local function setup_lsp_keymaps(bufnr)
   -- Hover documentation
   map('n', 'K', vim.lsp.buf.hover, vim.tbl_extend('force', opts, { desc = 'LSP: Hover documentation' }))
 
-  -- Go to implementation
-  map('n', 'gi', vim.lsp.buf.implementation, vim.tbl_extend('force', opts, { desc = 'LSP: Go to implementation' }))
+  -- Go to implementation / references / rename / code action:
+  -- use Neovim's built-in defaults (gri, grr, grn, gra). `gi` (insert at last insert
+  -- position), `gr` (virtual replace) and insert-mode `<C-k>` (digraph) stay untouched.
 
-  -- Signature help
+  -- Signature help (insert mode already has the built-in <C-s>)
   map('n', '<C-k>', vim.lsp.buf.signature_help, vim.tbl_extend('force', opts, { desc = 'LSP: Signature help' }))
-  map('i', '<C-k>', vim.lsp.buf.signature_help, vim.tbl_extend('force', opts, { desc = 'LSP: Signature help' }))
 
   -- Rename symbol
   map('n', '<leader>rn', vim.lsp.buf.rename, vim.tbl_extend('force', opts, { desc = 'LSP: Rename symbol' }))
 
   -- Code action (includes auto-import)
   map({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, vim.tbl_extend('force', opts, { desc = 'LSP: Code action' }))
-
-  -- Go to references
-  map('n', 'gr', vim.lsp.buf.references, vim.tbl_extend('force', opts, { desc = 'LSP: Go to references' }))
 
   -- Format buffer
   map('n', '<leader>lf', function()
@@ -47,13 +44,17 @@ local function setup_lsp_keymaps(bufnr)
   map('n', '<leader>e', vim.diagnostic.open_float, vim.tbl_extend('force', opts, { desc = 'LSP: Show diagnostics' }))
 
   -- Go to previous/next diagnostic
-  map('n', '[d', vim.diagnostic.goto_prev, vim.tbl_extend('force', opts, { desc = 'LSP: Previous diagnostic' }))
-  map('n', ']d', vim.diagnostic.goto_next, vim.tbl_extend('force', opts, { desc = 'LSP: Next diagnostic' }))
+  map('n', '[d', function()
+    vim.diagnostic.jump({ count = -1, float = true })
+  end, vim.tbl_extend('force', opts, { desc = 'LSP: Previous diagnostic' }))
+  map('n', ']d', function()
+    vim.diagnostic.jump({ count = 1, float = true })
+  end, vim.tbl_extend('force', opts, { desc = 'LSP: Next diagnostic' }))
 
   -- Show all diagnostics in location list
   map(
     'n',
-    '<leader>dl',
+    '<leader>xl',
     vim.diagnostic.setloclist,
     vim.tbl_extend('force', opts, { desc = 'LSP: Diagnostics to loclist' })
   )

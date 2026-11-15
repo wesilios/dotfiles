@@ -54,4 +54,4 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
-vim.keymap.set({ 'n', 'v' }, '`', '<Cmd>InspectTree<CR>', { desc = 'Toggle TS inspect tree' })
+vim.keymap.set('n', '<leader>ti', '<Cmd>InspectTree<CR>', { desc = 'Toggle TS inspect tree' })
