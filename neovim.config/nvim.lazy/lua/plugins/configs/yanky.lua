@@ -10,16 +10,17 @@ function M.setup()
     picker = { select = { telescope = true } },
   })
 
-  -- Override default yanks
-  map('n', '<C-c>', '<Plug>(YankyYank)', { desc = 'Yank line/selection (Yanky)' })
+  -- Yank with Yanky (history). `<C-c>` is left alone so it still cancels pending operators.
+  map('n', '<leader>yy', '<Plug>(YankyYank)_', { desc = 'Yank line (Yanky)' })
+  map('x', '<leader>y', '<Plug>(YankyYank)', { desc = 'Yank selection (Yanky)' })
 
   -- Smart paste
   map({ 'n', 'v' }, 'p', '<Plug>(YankyPutAfter)', { desc = 'Paste after (Yanky)' })
   map({ 'n', 'v' }, 'P', '<Plug>(YankyPutBefore)', { desc = 'Paste before (Yanky)' })
 
   -- Cycle through previous yanks
-  map('n', ']p', '<Plug>(YankyPreviousEntry)', { desc = 'Yank Previous Entry' })
-  map('n', '[p', '<Plug>(YankyNextEntry)', { desc = 'Yank Next Entry' })
+  map('n', '[p', '<Plug>(YankyPreviousEntry)', { desc = 'Yank Previous Entry' })
+  map('n', ']p', '<Plug>(YankyNextEntry)', { desc = 'Yank Next Entry' })
 
   -- Duplicate current line below (Ctrl-d)
   --map('n', '<C-d>', function()

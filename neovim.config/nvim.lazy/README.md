@@ -567,7 +567,7 @@ languages.
 - **Go to definition** (`gd`)
 - **Hover documentation** (`K`)
 - **Code diagnostics** with inline hints
-- **Signature help** (`<Ctrl-k>`)
+- **Signature help** (`<Ctrl-k>` in normal mode, built-in `<Ctrl-s>` in insert mode)
 - **Inlay hints** for types and parameters
 - **Code lens** for references and tests
 - **Rename refactoring** (`<leader>rn`)
@@ -768,11 +768,12 @@ Press `<F5>` in a C/C++ file and pick a configuration:
 
 | Keymap        | Mode          | Description              |
 | ------------- | ------------- | ------------------------ |
-| `<Ctrl-c>`    | Normal        | Yank line/selection      |
+| `<leader>yy`  | Normal        | Yank line (Yanky)        |
+| `<leader>y`   | Visual        | Yank selection (Yanky)   |
 | `p`           | Normal/Visual | Paste after (Yanky)      |
 | `P`           | Normal/Visual | Paste before (Yanky)     |
-| `]p`          | Normal        | Previous yank entry      |
-| `[p`          | Normal        | Next yank entry          |
+| `[p`          | Normal        | Previous yank entry      |
+| `]p`          | Normal        | Next yank entry          |
 | `<leader>yh`  | Normal        | Open yank history picker |
 | `<leader>yhc` | Normal        | Clear yank history       |
 
@@ -850,16 +851,16 @@ Press `<F5>` in a C/C++ file and pick a configuration:
 | `gd`         | Normal        | Go to definition                      |
 | `gD`         | Normal        | Go to declaration                     |
 | `K`          | Normal        | Hover documentation                   |
-| `gi`         | Normal        | Go to implementation                  |
-| `<Ctrl-k>`   | Normal/Insert | Signature help                        |
+| `gri`        | Normal        | Go to implementation (Neovim default) |
+| `<Ctrl-k>`   | Normal        | Signature help                        |
 | `<leader>ca` | Normal/Visual | Code action (includes auto-import)    |
-| `<leader>rn` | Normal        | Rename symbol                         |
-| `gr`         | Normal        | Go to references                      |
+| `<leader>rn` | Normal        | Rename symbol (also `grn`)            |
+| `grr`        | Normal        | Go to references (Neovim default)     |
 | `<leader>lf` | Normal        | Format buffer (LSP)                   |
 | `<leader>e`  | Normal        | Show diagnostics in floating window   |
 | `[d`         | Normal        | Go to previous diagnostic             |
 | `]d`         | Normal        | Go to next diagnostic                 |
-| `<leader>dl` | Normal        | Show all diagnostics in location list |
+| `<leader>xl` | Normal        | Show all diagnostics in location list |
 | `<leader>D`  | Normal        | Go to type definition                 |
 | `<leader>ws` | Normal        | Workspace symbols                     |
 | `<leader>th` | Normal        | Toggle inlay hints (type hints)       |
