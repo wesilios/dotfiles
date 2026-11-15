@@ -259,6 +259,24 @@ local function scan_all_plugins()
     })
   end
 
+  -- Pattern: specs where the name is on its own line (after a comment, or in a
+  -- multi-line `dependencies = { ... }` list). Skip names already collected.
+  local seen = {}
+  for _, p in ipairs(plugins) do
+    seen[p.full_name] = true
+  end
+  for line in content:gmatch('[^\n]+') do
+    local plugin_name = line:match([=[^%s*['"]([%w_.%-]+/[%w_.%-]+)['"],?%s*$]=])
+    if plugin_name and not seen[plugin_name] then
+      seen[plugin_name] = true
+      table.insert(plugins, {
+        full_name = plugin_name,
+        name = plugin_name:match('/(.+)$') or plugin_name,
+        source = 'plugins/init.lua',
+      })
+    end
+  end
+
   return plugins
 end
 
